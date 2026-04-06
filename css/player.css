@@ -1,0 +1,101 @@
+
+.player-top-grid {
+  align-items: start;
+}
+.action-shell {
+  position: sticky;
+  top: 14px;
+  z-index: 5;
+}
+.selection-grid, .lower-grid {
+  margin-top: 18px;
+}
+.status-panels {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 16px;
+}
+.status-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+}
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.action-group {
+  background: rgba(255,255,255,0.04);
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  padding: 14px;
+}
+.action-group h3 { margin-top: 0; margin-bottom: 12px; }
+.major-action {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.minor-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.minor-action {
+  width: 100%;
+  border-radius: 16px;
+}
+.submit-note, .twica-box p {
+  color: var(--sub);
+  line-height: 1.7;
+}
+.skill-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.skill-slot.used { opacity: 0.56; }
+.player-page .compact-grid.card-grid {
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+}
+.player-page .compact-grid.body-grid, .player-page .body-grid.compact-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.player-page .compact-grid .card-body {
+  padding: 10px;
+  gap: 4px;
+}
+.player-page .compact-grid .card-title, .player-page .compact-grid .body-name {
+  font-size: 14px;
+}
+.player-page .compact-grid .card-effect, .player-page .compact-grid .card-meta {
+  font-size: 12px;
+  line-height: 1.45;
+}
+.player-page .compact-grid .card-image {
+  aspect-ratio: 4 / 5;
+}
+.player-page .compact-grid .body-image {
+  aspect-ratio: 1 / 1;
+}
+.selected-deck-grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+.selected-deck-grid .card-image,
+.skill-row .card-image {
+  aspect-ratio: 1 / 1.15;
+}
+.selected-deck-grid .card-title,
+.skill-row .card-title {
+  font-size: 14px;
+}
+.selected-deck-grid .card-effect,
+.skill-row .card-effect,
+.skill-row .card-meta {
+  font-size: 12px;
+}
+@media (max-width: 900px) {
+  .status-panels, .action-grid, .skill-row { grid-template-columns: 1fr; }
+  .action-shell { position: static; }
+}

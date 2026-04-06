@@ -1,0 +1,67 @@
+
+.master-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.master-top-summary {
+  margin-top: 16px;
+}
+.master-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.master-player-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 18px;
+}
+.master-player-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.master-subtitle {
+  margin-top: 16px;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.master-deck {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.master-action-note {
+  color: var(--sub);
+  font-size: 13px;
+  margin-top: 6px;
+}
+.mini-body .body-unit {
+  max-width: 190px;
+}
+.mini-body .body-name { font-size: 14px; padding-inline: 10px; }
+.mini-body .body-image { aspect-ratio: 1 / 1; }
+.master-deck .card-unit {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  align-items: stretch;
+}
+.master-deck .card-image {
+  height: 100%;
+  min-height: 92px;
+  aspect-ratio: auto;
+}
+.master-deck .card-body {
+  padding: 10px;
+  gap: 4px;
+}
+.master-deck .card-title { font-size: 14px; }
+.master-deck .card-effect, .master-deck .card-meta, .master-deck .card-rarity { font-size: 12px; }
+@media (max-width: 900px) {
+  .master-columns { grid-template-columns: 1fr; }
+}
+
+#resolve-turn{min-width:140px;}
+.master-toolbar{align-items:center;}

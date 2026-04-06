@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>あまおと丸バトル / プレイヤー画面</title>
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/player.css" />
+</head>
+<body class="player-page">
+  <div class="container">
+<header class="page-header">
+  <div class="header-title">
+    <h1>あまおと丸バトル / プレイヤー画面</h1>
+    <p>名前・ボディ・カード3枚を登録し、対戦中はここから行動を選びます。</p>
+  </div>
+  <div class="header-actions">
+    <button type="button" class="secondary" data-open-rules>ルール</button>
+  </div>
+</header>
+
+<section class="panel">
+  <div class="form-grid">
+    <div>
+      <label for="room-code">ルームコード</label>
+      <input id="room-code" value="AMAOTO1" />
+    </div>
+    <div>
+      <label for="player-role">プレイヤー枠</label>
+      <select id="player-role">
+        <option value="p1">プレイヤー1</option>
+        <option value="p2">プレイヤー2</option>
+      </select>
+    </div>
+    <div>
+      <label for="player-name">プレイヤー名</label>
+      <input id="player-name" placeholder="名前を入力" />
+    </div>
+  </div>
+  <div class="entry-actions">
+    <button type="button" id="save-entry">参加内容を保存</button>
+    <div id="join-notice" class="submit-note"></div>
+  </div>
+  <div id="phase-box" class="phase-wrap"></div>
+</section>
+
+<section class="grid-2 player-top-grid">
+  <div class="panel action-shell">
+    <h2>行動選択</h2>
+    <div id="action-panel"></div>
+  </div>
+  <div class="panel">
+    <h2>現在の状態</h2>
+    <div id="status-box" class="status-panels"></div>
+  </div>
+</section>
+
+<section class="grid-2 selection-grid">
+  <div class="panel">
+    <h2>ボディを選ぶ</h2>
+    <div id="body-grid" class="body-grid compact-grid"></div>
+  </div>
+  <div class="panel">
+    <div class="section-title-row">
+      <h2>カードを3枚選ぶ</h2>
+      <div class="section-sub">選択中: <span id="deck-count">0</span> / 3</div>
+    </div>
+    <div id="twica-box" class="twica-box"></div>
+    <div id="card-grid" class="card-grid compact-grid"></div>
+  </div>
+</section>
+
+<section class="grid-2 lower-grid">
+  <div class="panel">
+    <h2>選択中のデッキ</h2>
+    <div id="selected-deck" class="card-grid selected-deck-grid"></div>
+  </div>
+  <div class="panel">
+    <h2>所持スキル</h2>
+    <div id="skill-panel" class="skill-row"></div>
+  </div>
+</section>
+
+  </div>
+  <script src="data/data.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/battle-engine.js"></script>
+  <script src="js/player.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+.spectator-state-panel {
+  margin-bottom: 18px;
+}
+.roomy-layout {
+  gap: 20px;
+}
+.spectator-layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 300px) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.spectator-player, .stage-shell, .log-shell {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 18px;
+}
+.spectator-name { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.spectator-meta { color: var(--sub); margin: 12px 0; }
+.spectator-card-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) minmax(120px, 150px);
+  gap: 16px;
+  align-items: start;
+  margin-top: 12px;
+}
+.spectator-card-block {
+  min-width: 0;
+}
+.spectator-card-label, .spectator-skill-label {
+  color: var(--sub);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.spectator-body-image {
+  width: 100%; max-width: 180px; border-radius: 16px; display: block; margin: 0 auto;
+}
+.body-placeholder, .stage-placeholder { padding: 28px 18px; color: var(--sub); text-align: center; line-height:1.7; }
+.center-stage {
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+}
+.center-summary {
+  text-align:center;
+  color: var(--sub);
+  line-height: 1.8;
+}
+.compact-summary {
+  padding: 16px;
+}
+.anim-card {
+  width: 100%; max-width: 145px; text-align: center; border-radius: 20px; border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  padding: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.26);
+  margin-inline: auto;
+}
+.anim-image { width: 100%; border-radius: 12px; aspect-ratio: 3 / 4; object-fit: cover; }
+.anim-title { font-size: 12px; font-weight: 800; margin-top: 6px; }
+.anim-skill { color: var(--accent); font-size: 12px; font-weight: 700; margin-top: 4px; }
+.anim-effect { color: var(--sub); line-height: 1.45; margin-top: 4px; font-size: 11px; }
+.spectator-skill-shell {
+  margin-top: 0;
+}
+.effect-攻撃 { box-shadow: 0 0 0 1px rgba(255,126,168,0.24), 0 12px 28px rgba(255,126,168,0.16); }
+.effect-回復 { box-shadow: 0 0 0 1px rgba(126,229,184,0.24), 0 12px 28px rgba(126,229,184,0.16); }
+.effect-防御 { box-shadow: 0 0 0 1px rgba(137,194,255,0.24), 0 12px 28px rgba(137,194,255,0.16); }
+.effect-妨害 { box-shadow: 0 0 0 1px rgba(255,210,122,0.24), 0 12px 28px rgba(255,210,122,0.16); }
+.effect-特殊 { box-shadow: 0 0 0 1px rgba(208,199,255,0.24), 0 12px 28px rgba(208,199,255,0.16); }
+.rules-overlay.hidden { display: none; }
+.rules-overlay { position: fixed; inset: 0; z-index: 50; pointer-events: none; display: grid; place-items: center; }
+.overlay-box {
+  width: min(760px, calc(100vw - 40px)); padding: 18px; background: rgba(10, 16, 30, 0.94); border-radius: 24px;
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.overlay-box h3 { margin-top: 0; }
+.overlay-box ul { line-height: 1.8; }
+.spectator-log-shell { margin-top: 22px; }
+@media (max-width: 1280px) {
+  .spectator-layout { grid-template-columns: 1fr; }
+  .spectator-card-row { grid-template-columns: 1fr 1fr; }
+  .center-stage { min-height: 160px; }
+}
