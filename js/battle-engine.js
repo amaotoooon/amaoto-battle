@@ -1,9 +1,9 @@
 
 (function () {
   const ATTACK_VALUES = {
-    punch: 14,
-    kick: 18,
-    throw: 24
+    punch: 18,
+    kick: 24,
+    throw: 32
   };
 
   const DEBUFF_SKILLS = new Set(["speech", "prank", "trouble_guard"]);
@@ -27,7 +27,7 @@
     }
     player.normalHealUsed += 1;
     const before = player.hp;
-    player.hp = Math.min(100, player.hp + 25);
+    player.hp = Math.min(100, player.hp + 20);
     logs.push(`${player.name}はHPを${player.hp - before}回復した。`);
   }
 
@@ -424,6 +424,8 @@
     state.lastAnimations = { p1: null, p2: null };
     state.battleLog = ["対戦開始。各プレイヤーから50Gを支払いました。"];
     state.resolvedThisTurn = false;
+    state.turnSummary = null;
+    state.turnResolvedAt = 0;
   }
 
   function resolveTurn(state) {
@@ -437,6 +439,7 @@
     const logs = [`--- ターン ${state.turn} ---`];
     state.lastAnimation = null;
     state.lastAnimations = { p1: null, p2: null };
+    const hpBefore = { p1: p1.hp, p2: p2.hp };
 
     const action1 = preprocessAction(p1, p2, p1.submittedAction, logs);
     const action2 = preprocessAction(p2, p1, p2.submittedAction, logs);
@@ -457,11 +460,28 @@
     applyEndTurnEffects(p1, logs);
     applyEndTurnEffects(p2, logs);
 
+    const turnSummary = {
+      turn: state.turn,
+      firstPlayerRole: order[0],
+      firstPlayerName: state.players[order[0]].name,
+      entries: [
+        { role: 'p1', name: p1.name, actionLabel: window.AM.describeAction ? window.AM.describeAction(action1) : '' },
+        { role: 'p2', name: p2.name, actionLabel: window.AM.describeAction ? window.AM.describeAction(action2) : '' }
+      ],
+      hpDelta: {
+        p1: p1.hp - hpBefore.p1,
+        p2: p2.hp - hpBefore.p2
+      },
+      highlights: logs.slice(1, 6)
+    };
+
     p1.submittedAction = null;
     p2.submittedAction = null;
     p1.actionLocked = false;
     p2.actionLocked = false;
     state.resolvedThisTurn = true;
+    state.turnSummary = turnSummary;
+    state.turnResolvedAt = Date.now();
     state.turn += 1;
 
     determineWinner(state, logs);

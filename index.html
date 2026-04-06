@@ -60,13 +60,29 @@
     <h2>ボディを選ぶ</h2>
     <div id="body-grid" class="body-grid compact-grid"></div>
   </div>
-  <div class="panel">
+  <div class="panel skill-select-panel">
     <div class="section-title-row">
       <h2>カードを3枚選ぶ</h2>
       <div class="section-sub">選択中: <span id="deck-count">0</span> / 3</div>
     </div>
     <div id="twica-box" class="twica-box"></div>
-    <div id="card-grid" class="card-grid compact-grid"></div>
+    <div class="skill-select-wrap">
+      <div class="skill-picks">
+        <div>
+          <label for="card-select-1">スキルカード①</label>
+          <select id="card-select-1" class="card-select"></select>
+        </div>
+        <div>
+          <label for="card-select-2">スキルカード②</label>
+          <select id="card-select-2" class="card-select"></select>
+        </div>
+        <div>
+          <label for="card-select-3">スキルカード③</label>
+          <select id="card-select-3" class="card-select"></select>
+        </div>
+      </div>
+      <div id="card-preview-grid" class="card-preview-grid"></div>
+    </div>
   </div>
 </section>
 

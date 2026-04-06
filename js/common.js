@@ -54,7 +54,9 @@
       winner: null,
       lastAnimation: null,
       lastAnimations: { p1: null, p2: null },
-      resolvedThisTurn: false
+      resolvedThisTurn: false,
+      turnSummary: null,
+      turnResolvedAt: 0
     };
   }
 
@@ -73,6 +75,8 @@
       parsed.players.p1.effects = Object.assign(createEffects(), parsed.players.p1.effects || {});
       parsed.players.p2.effects = Object.assign(createEffects(), parsed.players.p2.effects || {});
       parsed.lastAnimations = Object.assign({ p1: null, p2: null }, parsed.lastAnimations || {});
+      if (typeof parsed.turnResolvedAt !== "number") parsed.turnResolvedAt = 0;
+      if (!Object.prototype.hasOwnProperty.call(parsed, "turnSummary")) parsed.turnSummary = null;
       return parsed;
     } catch (e) {
       console.warn("state parse failed", e);
@@ -121,6 +125,18 @@
   function findCard(cardId) { return (window.AM_DATA.cards || []).find((x) => x.cardId === cardId) || null; }
   function findCardBySkill(skillKey) { return (window.AM_DATA.cards || []).find((x) => x.skillKey === skillKey) || null; }
   function findSkill(skillKey) { return (window.AM_DATA.skills || []).find((x) => x.skillKey === skillKey) || null; }
+
+  function describeAction(action) {
+    if (!action) return "未入力";
+    if (action.type === "attack") return `たたかう / ${moveLabel(action.move)}`;
+    if (action.type === "guard") return "ガード";
+    if (action.type === "heal") return action.mode === "emergency" ? "瀕死回復" : "回復する";
+    if (action.type === "skill") {
+      const skill = findSkill(action.skillKey);
+      return `スキル / ${skill ? skill.skillName : action.skillKey}`;
+    }
+    return action.type;
+  }
   function moveLabel(moveKey) {
     const item = (window.AM_DATA.attackMoves || []).find((x) => x.key === moveKey);
     return item ? item.label : moveKey;
@@ -273,5 +289,5 @@
       .replaceAll("'", "&#39;");
   }
 
-  window.AM = { DEFAULT_ROOM, createEffects, createEmptyState, loadState, saveState, updateState, resetRoom, getPlayer, getOpponentRole, findBody, findCard, findCardBySkill, findSkill, moveLabel, createCardHTML, createBodyHTML, createEffectBadges, openRulesModal, subscribeState, escapeHtml, broadcastState };
+  window.AM = { DEFAULT_ROOM, createEffects, createEmptyState, loadState, saveState, updateState, resetRoom, getPlayer, getOpponentRole, findBody, findCard, findCardBySkill, findSkill, moveLabel, describeAction, createCardHTML, createBodyHTML, createEffectBadges, openRulesModal, subscribeState, escapeHtml, broadcastState };
 })();

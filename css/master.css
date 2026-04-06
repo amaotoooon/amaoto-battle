@@ -65,3 +65,15 @@
 
 #resolve-turn{min-width:140px;}
 .master-toolbar{align-items:center;}
+
+.top-action-panel{padding-bottom:18px;}
+.action-status-bar{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin-top:10px;}
+.action-status-chip{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,0.05);font-weight:700;}
+.action-status-chip .label{color:var(--text);}
+.action-status-chip .value{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,0.08);font-size:13px;}
+.action-status-chip.is-ready{border-color:rgba(98,220,152,.45);background:rgba(98,220,152,.12);}
+.action-status-chip.is-ready .value{background:rgba(98,220,152,.18);color:#d9ffe7;}
+.action-status-chip.is-waiting{border-color:rgba(255,179,102,.38);background:rgba(255,179,102,.12);}
+.action-status-chip.is-waiting .value{background:rgba(255,179,102,.18);color:#ffe7c7;}
+.action-status-chip.turn-chip{justify-content:center;min-width:120px;background:rgba(255,255,255,0.06);}
+@media (max-width: 900px){.action-status-bar{grid-template-columns:1fr;}}

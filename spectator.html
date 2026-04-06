@@ -8,11 +8,11 @@
   <link rel="stylesheet" href="css/spectator.css" />
 </head>
 <body class="spectator-page">
-  <div class="container">
+  <div class="container spectator-container">
 <header class="page-header">
   <div class="header-title">
     <h1>あまおと丸バトル / 観戦画面</h1>
-    <p>OBSで映す用の画面です。左右の状況とログを見やすく表示します。</p>
+    <p>OBSで映す用の画面です。1ターンごとの流れが見やすい表示にしています。</p>
   </div>
   <div class="header-actions">
     <input id="spectator-room-code" value="AMAOTO1" />
@@ -24,9 +24,16 @@
   <div id="spectator-state"></div>
 </section>
 
-<section class="spectator-layout roomy-layout">
+<section class="panel turn-summary-panel">
+  <div class="turn-summary-top">
+    <div id="turn-chip" class="phase-chip">ターン 1</div>
+    <div id="first-chip" class="phase-chip first-chip">先行: 未定</div>
+  </div>
+  <div id="turn-events" class="turn-events"></div>
+</section>
+
+<section class="spectator-battle-grid panel">
   <div id="spectator-left"></div>
-  <div id="center-stage" class="stage-shell center-stage"></div>
   <div id="spectator-right"></div>
 </section>
 

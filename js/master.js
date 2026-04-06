@@ -7,6 +7,7 @@
   const rulesBtn = document.querySelectorAll("[data-open-rules]");
   const showRulesBtn = document.getElementById("show-spectator-rules");
   const stateSummary = document.getElementById("state-summary");
+  const actionStatus = document.getElementById("action-status");
   const playerColumns = document.getElementById("player-columns");
   const battleLog = document.getElementById("master-log");
   let currentRoom = roomInput.value || window.AM.DEFAULT_ROOM;
@@ -39,13 +40,21 @@
   function render(state) {
     const p1 = state.players.p1;
     const p2 = state.players.p2;
+    actionStatus.innerHTML = `
+      <div class="action-status-chip ${p1.actionLocked ? 'is-ready' : 'is-waiting'}">
+        <span class="label">${window.AM.escapeHtml(p1.name || 'プレイヤー1')}</span>
+        <span class="value">${p1.actionLocked ? '入力済み' : '未入力'}</span>
+      </div>
+      <div class="action-status-chip turn-chip">ターン ${state.turn}</div>
+      <div class="action-status-chip ${p2.actionLocked ? 'is-ready' : 'is-waiting'}">
+        <span class="label">${window.AM.escapeHtml(p2.name || 'プレイヤー2')}</span>
+        <span class="value">${p2.actionLocked ? '入力済み' : '未入力'}</span>
+      </div>
+    `;
     stateSummary.innerHTML = `
       <div class="phase-chip">ルーム: ${window.AM.escapeHtml(state.roomCode)}</div>
       <div class="phase-chip">フェーズ: ${window.AM.escapeHtml(state.phase)}</div>
-      <div class="phase-chip">ターン: ${state.turn}</div>
       <div class="phase-chip">観戦ルール表示: ${state.pendingSpectatorRules ? 'ON' : 'OFF'}</div>
-      <div class="phase-chip">${window.AM.escapeHtml(p1.name || 'プレイヤー1')}: ${p1.actionLocked ? '入力済み' : '未入力'}</div>
-      <div class="phase-chip">${window.AM.escapeHtml(p2.name || 'プレイヤー2')}: ${p2.actionLocked ? '入力済み' : '未入力'}</div>
       <div class="phase-chip">勝者: ${state.winner === 'draw' ? '引き分け' : state.winner ? window.AM.escapeHtml(state.players[state.winner].name) : '未決着'}</div>
     `;
     playerColumns.innerHTML = renderPlayerColumn(state, "p1") + renderPlayerColumn(state, "p2");
