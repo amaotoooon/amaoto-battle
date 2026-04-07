@@ -496,8 +496,9 @@ window.AM_DATA = {
     "金運UPを使って勝つと獲得Gが増える"
   ],
   "twicaText": [
-    "TWiCaで獲得したカードの中から3枚選んでください。",
-    "持っているカードは、TWiCaにTwitchでログインして「My Collection」から確認できます。",
+    "TwiCaで獲得したカードの中から3枚選んでください。",
+    "持っているカードは、TwiCaにTwitchでログインして「My Collection」から確認できます。",
+    "TwiCaはこちら：https://twica.bluemoon.works/ （別タブで開けます）",
     "カードの選択は自己申告でお願いします。"
   ]
 };

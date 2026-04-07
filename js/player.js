@@ -10,10 +10,12 @@
   const phaseBox = document.getElementById("phase-box");
   const actionPanel = document.getElementById("action-panel");
   const statusBox = document.getElementById("status-box");
-  const skillPanel = document.getElementById("skill-panel");
   const ruleButtons = document.querySelectorAll("[data-open-rules]");
   const joinNotice = document.getElementById("join-notice");
   const previewGrid = document.getElementById("card-preview-grid");
+  const messageInput = document.getElementById("player-message");
+  const sendMessageBtn = document.getElementById("send-message");
+  const messageStatus = document.getElementById("message-status");
   const cardSelects = [1, 2, 3].map((n) => document.getElementById(`card-select-${n}`));
 
   let currentRoom = roomInput.value || window.AM.DEFAULT_ROOM;
@@ -52,7 +54,7 @@
     saveDraft(currentRoom, getRole());
   }
 
-  twicaBox.innerHTML = (window.AM_DATA.twicaText || []).map((line) => `<p>${window.AM.escapeHtml(line)}</p>`).join("");
+  twicaBox.innerHTML = (window.AM_DATA.twicaText || []).map((line) => line.includes("https://twica.bluemoon.works/") ? `<p><a href="https://twica.bluemoon.works/" target="_blank" rel="noopener noreferrer">https://twica.bluemoon.works/</a></p>` : `<p>${window.AM.escapeHtml(line)}</p>`).join("");
   ruleButtons.forEach((btn) => btn.addEventListener("click", () => window.AM.openRulesModal()));
 
   function getRole() { return roleSelect.value || "p1"; }
@@ -166,34 +168,40 @@
   function renderPlayerStatus(state) {
     const player = state.players[getRole()];
     const opponent = state.players[window.AM.getOpponentRole(getRole())];
+    const heart = 'assets/images/ui/icon_heart.png';
+    const renderHp = (hp, shield = 0) => {
+      const percent = Math.max(0, Math.min(100, hp));
+      const shieldPercent = Math.max(0, Math.min(Math.max(0, 100 - percent), shield));
+      return `
+        <div class="status-hp-wrap">
+          <div class="status-hp-row">
+            <img src="${heart}" alt="" class="status-heart" />
+            <div class="hp-bar thick">
+              <div class="hp-fill" style="width:${percent}%"></div>
+              ${shieldPercent > 0 ? `<div class="shield-fill" style="left:${percent}%;width:${shieldPercent}%"></div>` : ''}
+            </div>
+            <div class="status-hp-number">${hp}</div>
+          </div>
+        </div>`;
+    };
     statusBox.innerHTML = `
       <div class="status-card">
         <h3>${window.AM.escapeHtml(player.name || '未登録')}</h3>
-        <p>所持金: ${player.gold}G</p>
-        <p>HP: ${player.hp}</p>
-        <p>通常回復: ${Math.max(0, 2 - player.normalHealUsed)}回</p>
-        <p>瀕死回復: ${player.emergencyHealUsed ? '使用済み' : '未使用'}</p>
+        <div class="status-line">所持金: ${player.gold}G</div>
+        ${renderHp(player.hp, player.shield || 0)}
+        <div class="status-line">通常回復: ${Math.max(0, 2 - player.normalHealUsed)}回</div>\n        <div class="status-line">シールド: ${player.shield || 0}</div>
+        <div class="status-line">瀕死回復: ${player.emergencyHealUsed ? '使用済み' : '未使用'}</div>
         <div class="effects-row">${window.AM.createEffectBadges(player)}</div>
       </div>
       <div class="status-card">
         <h3>相手</h3>
-        <p>${window.AM.escapeHtml(opponent.name || '未参加')}</p>
-        <p>HP: ${opponent.hp}</p>
-        <div class="effects-row">${window.AM.createEffectBadges(opponent)}</div>
+        <div class="status-line">${window.AM.escapeHtml(opponent.name || '未参加')}</div>
+        ${renderHp(opponent.hp, opponent.shield || 0)}
+        <div class="status-line">シールド: ${opponent.shield || 0}</div>\n        <div class="effects-row">${window.AM.createEffectBadges(opponent)}</div>
       </div>
     `;
   }
 
-  function renderSkillPanel(state) {
-    const player = state.players[getRole()];
-    const sourceIds = (player.joined && player.selectedCards && player.selectedCards.length === 3) ? player.selectedCards : getChosenCards();
-    const usedSkills = player.usedSkills || [];
-    const cards = (sourceIds || []).map((id) => window.AM.findCard(id)).filter(Boolean);
-    skillPanel.innerHTML = cards.map((card) => {
-      const used = usedSkills.includes(card.skillKey);
-      return `<div class="skill-slot ${used ? 'used' : ''}">${window.AM.createCardHTML(card, used ? '使用済み' : '未使用')}</div>`;
-    }).join("") || `<div class="empty-note">スキルカード未登録</div>`;
-  }
 
   function lockAction(action) {
     const state = currentState();
@@ -278,12 +286,29 @@
     renderCardSelects();
     renderSelectedDeck();
     renderPlayerStatus(state);
-    renderSkillPanel(state);
     renderActionPanel(state);
     renderPhase(state);
   }
 
+
+  function sendMessage() {
+    const text = (messageInput.value || "").trim();
+    if (!text) {
+      messageStatus.textContent = "メッセージを入力してください。";
+      return;
+    }
+    window.AM.updateState(currentRoom, (state) => {
+      const me = state.players[getRole()];
+      me.message = text.slice(0, 40);
+    });
+    messageStatus.textContent = "メッセージを送信しました。";
+    messageInput.value = "";
+  }
+
   saveBtn.addEventListener("click", saveEntry);
+  sendMessageBtn.addEventListener("click", sendMessage);
+  messageInput.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); sendMessage(); } });
+
   roomInput.addEventListener("change", () => {
     currentRoom = roomInput.value.trim() || window.AM.DEFAULT_ROOM;
     draftDirty = false;

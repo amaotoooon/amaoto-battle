@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>あまおと丸バトル / プレイヤー画面</title>
+  <title>あまおと丸のリスナーバトル / プレイヤー画面</title>
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/player.css" />
 </head>
@@ -11,11 +11,11 @@
   <div class="container">
 <header class="page-header">
   <div class="header-title">
-    <h1>あまおと丸バトル / プレイヤー画面</h1>
+    <h1>あまおと丸のリスナーバトル / プレイヤー画面</h1>
     <p>名前・ボディ・カード3枚を登録し、対戦中はここから行動を選びます。</p>
   </div>
   <div class="header-actions">
-    <button type="button" class="secondary" data-open-rules>ルール</button>
+    <button type="button" class="secondary" data-open-rules>ルール・戦闘の流れについて</button>
   </div>
 </header>
 
@@ -23,7 +23,7 @@
   <div class="form-grid">
     <div>
       <label for="room-code">ルームコード</label>
-      <input id="room-code" value="AMAOTO1" />
+      <input id="room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
     </div>
     <div>
       <label for="player-role">プレイヤー枠</label>
@@ -46,6 +46,15 @@
 
 <section class="grid-2 player-top-grid">
   <div class="panel action-shell">
+    <div class="inline-message-panel">
+      <h2>ひとことメッセージ</h2>
+      <p class="message-help">待機中でも送れます。送信したメッセージは相手画面と観戦画面に表示され、次のターン実行で消えます。</p>
+      <div class="message-row">
+        <input id="player-message" placeholder="ひとことを入力" maxlength="40" />
+        <button type="button" id="send-message" class="secondary">送信</button>
+      </div>
+      <div id="message-status" class="submit-note"></div>
+    </div>
     <h2>行動選択</h2>
     <div id="action-panel"></div>
   </div>
@@ -86,14 +95,10 @@
   </div>
 </section>
 
-<section class="grid-2 lower-grid">
+<section class="lower-grid single-column">
   <div class="panel">
     <h2>選択中のデッキ</h2>
     <div id="selected-deck" class="card-grid selected-deck-grid"></div>
-  </div>
-  <div class="panel">
-    <h2>所持スキル</h2>
-    <div id="skill-panel" class="skill-row"></div>
   </div>
 </section>
 

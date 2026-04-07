@@ -34,6 +34,7 @@
       emergencyHealUsed: false,
       submittedAction: null,
       actionLocked: false,
+      message: "",
       effects: createEffects()
     };
   }
@@ -196,8 +197,8 @@
 
   function createRulesHTML() {
     const lines = (window.AM_DATA.rulesText || []).map((x) => `<li>${escapeHtml(x)}</li>`).join("");
-    const twica = (window.AM_DATA.twicaText || []).map((x) => `<p>${escapeHtml(x)}</p>`).join("");
-    return `<div class="rules-block"><h3>遊び方</h3><ul>${lines}</ul><h3>TWiCaカードの選択について</h3>${twica}</div>`;
+    const twica = (window.AM_DATA.twicaText || []).map((x) => x.includes("https://twica.bluemoon.works/") ? `<p><a href="https://twica.bluemoon.works/" target="_blank" rel="noopener noreferrer">https://twica.bluemoon.works/</a></p>` : `<p>${escapeHtml(x)}</p>`).join("");
+    return `<div class="rules-block"><h3>遊び方</h3><ul>${lines}</ul><h3>TwiCaカードの選択について</h3>${twica}</div>`;
   }
 
   function ensureRulesModal() {

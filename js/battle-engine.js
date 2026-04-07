@@ -97,10 +97,17 @@
     damage = Math.max(0, damage);
 
     if (defender.shield > 0 && damage > 0) {
+      const shieldBefore = defender.shield;
       const absorbed = Math.min(defender.shield, damage);
       defender.shield -= absorbed;
       damage -= absorbed;
-      logs.push(`${defender.name}のシールドが${absorbed}ダメージを吸収。`);
+      if (defender.shield > 0) {
+        logs.push(`${defender.name}のシールドが${absorbed}ダメージを吸収。シールド残：${defender.shield}`);
+      } else if (absorbed >= shieldBefore && damage === 0) {
+        logs.push(`${defender.name}のシールド相殺。`);
+      } else {
+        logs.push(`${defender.name}のシールドが破壊された。`);
+      }
     }
 
     defender.hp = Math.max(0, defender.hp - damage);
@@ -242,7 +249,7 @@
         break;
       case "stamina":
         caster.shield += 20;
-        logs.push(`${caster.name}はシールド20を得た。`);
+        logs.push(`${caster.name}はシールド20を得た。シールド残：${caster.shield}`);
         break;
       case "mystic_power": {
         const roll = randomInt(1, 4);
@@ -254,7 +261,7 @@
           logs.push(`${caster.name}は不思議な力でHPを${caster.hp - before}回復した。`);
         } else if (roll === 3) {
           caster.shield += 15;
-          logs.push(`${caster.name}は不思議な力でシールド15を得た。`);
+          logs.push(`${caster.name}は不思議な力でシールド15を得た。シールド残：${caster.shield}`);
         } else {
           caster.effects.nextAttackBonus += 8;
           logs.push(`${caster.name}は不思議な力で次の攻撃を強化した。`);
@@ -440,12 +447,13 @@
     state.lastAnimation = null;
     state.lastAnimations = { p1: null, p2: null };
     const hpBefore = { p1: p1.hp, p2: p2.hp };
+    const shieldBefore = { p1: p1.shield, p2: p2.shield };
 
     const action1 = preprocessAction(p1, p2, p1.submittedAction, logs);
     const action2 = preprocessAction(p2, p1, p2.submittedAction, logs);
 
     const order = Math.random() < 0.5 ? ["p1", "p2"] : ["p2", "p1"];
-    logs.push(`先手は${state.players[order[0]].name}。`);
+    logs.push(`先攻は${state.players[order[0]].name}。`);
 
     const first = state.players[order[0]];
     const second = state.players[order[1]];
@@ -460,23 +468,48 @@
     applyEndTurnEffects(p1, logs);
     applyEndTurnEffects(p2, logs);
 
+    const makeEntry = (role, player, action, hpDelta, shieldPrev) => {
+      const notes = [];
+      if (player.shield > shieldPrev) {
+        notes.push(`シールド残：${player.shield}`);
+      } else if (shieldPrev > 0) {
+        if (player.shield > 0) notes.push(`シールド残：${player.shield}`);
+        else if (hpDelta === 0) notes.push('シールド相殺');
+        else notes.push('シールド破壊');
+      }
+      return {
+        role,
+        name: player.name,
+        actionLabel: window.AM.describeAction ? window.AM.describeAction(action) : '',
+        note: notes.join(' / ')
+      };
+    };
+
     const turnSummary = {
       turn: state.turn,
       firstPlayerRole: order[0],
       firstPlayerName: state.players[order[0]].name,
+      secondPlayerRole: order[1],
+      secondPlayerName: state.players[order[1]].name,
       entries: [
-        { role: 'p1', name: p1.name, actionLabel: window.AM.describeAction ? window.AM.describeAction(action1) : '' },
-        { role: 'p2', name: p2.name, actionLabel: window.AM.describeAction ? window.AM.describeAction(action2) : '' }
+        makeEntry('p1', p1, action1, p1.hp - hpBefore.p1, shieldBefore.p1),
+        makeEntry('p2', p2, action2, p2.hp - hpBefore.p2, shieldBefore.p2)
       ],
       hpDelta: {
         p1: p1.hp - hpBefore.p1,
         p2: p2.hp - hpBefore.p2
+      },
+      shield: {
+        p1: p1.shield,
+        p2: p2.shield
       },
       highlights: logs.slice(1, 6)
     };
 
     p1.submittedAction = null;
     p2.submittedAction = null;
+    p1.message = "";
+    p2.message = "";
     p1.actionLocked = false;
     p2.actionLocked = false;
     state.resolvedThisTurn = true;
