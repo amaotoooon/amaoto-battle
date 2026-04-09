@@ -3,38 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>あまおと丸のリスナーバトル / 観戦画面</title>
+  <title>あまおと丸ぷれぜんつ｜リスナーバトル / 観戦</title>
+  <meta name="theme-color" content="#1eb0eb" />
+  <meta name="application-name" content="あまおと丸ぷれぜんつ｜リスナーバトル" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="リスナーバトル" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/ui/webappicon_ios.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/ui/webappicon_android.png" />
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/spectator.css" />
 </head>
 <body class="spectator-page">
   <div class="container spectator-container">
     <header class="page-header spectator-header-minimal">
-      <div class="header-title">
-        <h1>あまおと丸のリスナーバトル</h1>
-      </div>
+      <div class="header-title spectator-logo-title"><img src="assets/images/ui/game_logo_wide.png" alt="あまおと丸のリスナーバトル" class="spectator-logo-wide" /></div>
       <div class="header-actions spectator-header-actions">
         <input id="spectator-room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
-        <button type="button" class="secondary" data-open-rules>ルール</button>
       </div>
     </header>
-
-    <section class="panel turn-summary-panel">
+    <section class="panel turn-summary-panel v14-panel">
       <div id="phase-banner" class="phase-banner">対戦開始前</div>
-      <div id="turn-events" class="turn-events"></div>
+      <div id="top-ready-row" class="top-ready-row"></div>
+      <div id="chat-row" class="chat-row"></div>
     </section>
-
-    <section class="spectator-battle-grid panel">
+    <section class="spectator-battle-grid panel v14-panel">
       <div id="spectator-left"></div>
       <div id="spectator-right"></div>
     </section>
-
-    <div id="spectator-rules" class="rules-overlay hidden"></div>
+    <section id="bet-overlay" class="bet-overlay hidden"></section>
+    <section id="result-overlay" class="result-overlay hidden"></section>
   </div>
   <script src="data/data.js"></script>
   <script src="js/config.js"></script>
   <script src="js/sync.js"></script>
   <script src="js/common.js"></script>
   <script src="js/spectator.js"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>

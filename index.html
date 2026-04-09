@@ -3,105 +3,176 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>あまおと丸のリスナーバトル / プレイヤー画面</title>
+  <title>あまおと丸ぷれぜんつ｜リスナーバトル</title>
+  <meta name="theme-color" content="#1eb0eb" />
+  <meta name="application-name" content="あまおと丸ぷれぜんつ｜リスナーバトル" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="リスナーバトル" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/ui/webappicon_ios.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/ui/webappicon_android.png" />
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/player.css" />
 </head>
 <body class="player-page">
-  <div class="container">
-<header class="page-header">
-  <div class="header-title">
-    <h1>あまおと丸のリスナーバトル / プレイヤー画面</h1>
-    <p>名前・ボディ・カード3枚を登録し、対戦中はここから行動を選びます。</p>
-  </div>
-  <div class="header-actions">
-    <button type="button" class="secondary" data-open-rules>ルール・戦闘の流れについて</button>
-  </div>
-</header>
-
-<section class="panel">
-  <div class="form-grid">
-    <div>
-      <label for="room-code">ルームコード</label>
-      <input id="room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
-    </div>
-    <div>
-      <label for="player-role">プレイヤー枠</label>
-      <select id="player-role">
-        <option value="p1">プレイヤー1</option>
-        <option value="p2">プレイヤー2</option>
-      </select>
-    </div>
-    <div>
-      <label for="player-name">プレイヤー名</label>
-      <input id="player-name" placeholder="名前を入力" />
-    </div>
-  </div>
-  <div class="entry-actions">
-    <button type="button" id="save-entry">参加内容を保存</button>
-    <div id="join-notice" class="submit-note"></div>
-  </div>
-  <div id="phase-box" class="phase-wrap"></div>
-</section>
-
-<section class="grid-2 player-top-grid">
-  <div class="panel action-shell">
-    <div class="inline-message-panel">
-      <h2>ひとことメッセージ</h2>
-      <p class="message-help">待機中でも送れます。送信したメッセージは相手画面と観戦画面に表示され、次のターン実行で消えます。</p>
-      <div class="message-row">
-        <input id="player-message" placeholder="ひとことを入力" maxlength="40" />
-        <button type="button" id="send-message" class="secondary">送信</button>
+  <div class="player-page-overlay"></div>
+  <div class="container player-container">
+    <header id="flow-header" class="player-flow-header hidden">
+      <div class="player-flow-logo-wrap">
+        <img src="assets/images/ui/game_logo_wide.png" alt="あまおと丸ぷれぜんつ リスナーカードバトル" class="player-flow-logo" />
       </div>
-      <div id="message-status" class="submit-note"></div>
-    </div>
-    <h2>行動選択</h2>
-    <div id="action-panel"></div>
-  </div>
-  <div class="panel">
-    <h2>現在の状態</h2>
-    <div id="status-box" class="status-panels"></div>
-  </div>
-</section>
+      <div class="header-actions player-flow-actions">
+        <button type="button" class="danger exit-top" data-exit-top>退出する</button>
+        <button type="button" class="info" data-open-rules>ルール・戦闘の流れ</button>
+      </div>
+    </header>
 
-<section class="grid-2 selection-grid">
-  <div class="panel">
-    <h2>ボディを選ぶ</h2>
-    <div id="body-grid" class="body-grid compact-grid"></div>
-  </div>
-  <div class="panel skill-select-panel">
-    <div class="section-title-row">
-      <h2>カードを3枚選ぶ</h2>
-      <div class="section-sub">選択中: <span id="deck-count">0</span> / 3</div>
-    </div>
-    <div id="twica-box" class="twica-box"></div>
-    <div class="skill-select-wrap">
-      <div class="skill-picks">
-        <div>
-          <label for="card-select-1">スキルカード①</label>
-          <select id="card-select-1" class="card-select"></select>
-        </div>
-        <div>
-          <label for="card-select-2">スキルカード②</label>
-          <select id="card-select-2" class="card-select"></select>
-        </div>
-        <div>
-          <label for="card-select-3">スキルカード③</label>
-          <select id="card-select-3" class="card-select"></select>
+    <section id="intro-stage" class="intro-stage-shell">
+      <div class="intro-stage-center">
+        <img src="assets/images/ui/game_logo.png" alt="あまおと丸ぷれぜんつ リスナーカードバトル" class="intro-main-logo" />
+        <p class="intro-copy">リスナー最強を目指せ</p>
+        <div class="entry-actions intro-actions">
+          <button type="button" id="start-entry" class="primary-cta large">エントリーする</button>
         </div>
       </div>
-      <div id="card-preview-grid" class="card-preview-grid"></div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="lower-grid single-column">
-  <div class="panel">
-    <h2>選択中のデッキ</h2>
-    <div id="selected-deck" class="card-grid selected-deck-grid"></div>
-  </div>
-</section>
+    <section id="identity-stage" class="panel stage-card entry-stage hidden">
+      <h2 class="stage-title centered">プレイヤー情報を入力</h2>
+      <div class="form-grid two-cols player-form-grid">
+        <div>
+          <label for="player-role">プレイヤーNO.</label>
+          <select id="player-role">
+            <option value="p1">プレイヤー1</option>
+            <option value="p2">プレイヤー2</option>
+          </select>
+          <p class="field-help">※配信内で割り振られた番号を選択してください</p>
+        </div>
+        <div>
+          <label for="player-name">プレイヤー名</label>
+          <input id="player-name" placeholder="名前を入力" />
+        </div>
+      </div>
+      <div class="entry-actions stage-actions stage-actions-center">
+        <button type="button" id="go-room" class="primary-cta">ルームコードの入力へ</button>
+        <div id="identity-notice" class="submit-note"></div>
+      </div>
+    </section>
 
+    <section id="room-stage" class="panel stage-card room-stage hidden">
+      <h2 class="stage-title centered">ルームコードを入力</h2>
+      <div class="form-grid single-col player-form-grid">
+        <div>
+          <label for="room-code">ルームコード</label>
+          <input id="room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
+          <p class="field-help">※配信内で指定されたルームコードを入力してください</p>
+        </div>
+      </div>
+      <div class="entry-actions stage-actions stage-actions-center">
+        <button type="button" id="save-entry" class="primary-cta">入室する</button>
+        <div id="join-notice" class="submit-note"></div>
+      </div>
+    </section>
+
+    <section id="setup-stage" class="hidden">
+      <div class="setup-intro"><h2>対戦準備</h2><p>まずは所持G・BET・ボディ・スキルカードを選択してください</p></div>
+      <section class="panel stage-card setup-panel setup-gold-panel">
+        <div class="section-title-row with-icon">
+          <h2><img src="assets/images/ui/icon_coin.png" alt="" class="section-heading-icon">所持金とBET額の設定</h2>
+        </div>
+        <div class="setup-desc-list">
+          <p>※初参加時は1,000Gスタートです。</p>
+          <p>※覚えている範囲の所持Gを入力してください。</p>
+          <p>※最低ベットは50Gです。不足分だけ借金になります。</p>
+        </div>
+        <div class="form-grid setup-grid two-cols">
+          <div>
+            <label for="player-gold">所持G(ゴールド)</label>
+            <input id="player-gold" type="number" min="0" value="1000" />
+          </div>
+          <div>
+            <label for="player-bet">BET額</label>
+            <input id="player-bet" type="number" min="50" value="50" />
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-2 selection-grid compact-selection-grid player-setup-grid">
+        <div class="panel stage-card body-panel">
+          <h2 class="section-heading"><img src="assets/images/ui/icon_player_left.png" alt="" class="section-heading-icon">ボディーカード選択</h2>
+          <div id="body-grid" class="body-grid compact-grid"></div>
+        </div>
+        <div class="panel stage-card skill-select-panel">
+          <div class="section-title-row with-icon">
+            <h2><img src="assets/images/ui/icon_book.png" alt="" class="section-heading-icon">スキルカード選択</h2>
+            <div class="section-sub">選択中: <span id="deck-count">0</span> / 3</div>
+          </div>
+          <div id="twica-box" class="twica-box"></div>
+          <div class="skill-select-wrap">
+            <div class="skill-picks">
+              <div><label for="card-select-1">スキルカード①</label><select id="card-select-1" class="card-select"></select></div>
+              <div><label for="card-select-2">スキルカード②</label><select id="card-select-2" class="card-select"></select></div>
+              <div><label for="card-select-3">スキルカード③</label><select id="card-select-3" class="card-select"></select></div>
+            </div>
+            <div id="card-preview-grid" class="card-preview-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel stage-card setup-confirm-panel">
+        <div class="entry-actions stage-actions stage-actions-center">
+          <button type="button" id="save-setup" class="primary-cta">この内容でエントリーする</button>
+          <div id="setup-notice" class="submit-note"></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="battle-stage" class="hidden">
+      <section class="panel stage-card battle-phase-panel">
+        <div id="phase-box" class="phase-wrap"></div>
+      </section>
+
+      <section class="panel stage-card message-stage-panel">
+        <h2 class="section-heading">ひとことメッセージ</h2>
+        <div class="message-row">
+          <input id="player-message" placeholder="ひとことを入力" maxlength="40" />
+          <button type="button" id="send-message" class="secondary">送信</button>
+        </div>
+        <div id="message-status" class="submit-note"></div>
+      </section>
+
+      <section class="grid-2 player-top-grid compact-battle-grid">
+        <div class="panel stage-card action-shell">
+          <h2 class="section-heading">行動選択</h2>
+          <div id="action-panel"></div>
+        </div>
+        <div class="panel stage-card quick-links-panel">
+          <h2 class="section-heading">確認メニュー</h2>
+          <div class="quick-links">
+            <button type="button" class="secondary" id="open-entry-review">エントリー内容の確認</button>
+            <button type="button" class="secondary" id="open-status-review">対戦状況の確認</button>
+            <button type="button" class="secondary" id="open-log-review">対戦ログ</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="status-review-panel" class="panel stage-card hidden">
+        <h2 class="section-heading">対戦状況の確認</h2>
+        <div id="status-box" class="status-panels"></div>
+      </section>
+
+      <section id="entry-review-panel" class="panel stage-card hidden">
+        <h2 class="section-heading">エントリー内容の確認</h2>
+        <div id="entry-review-box" class="entry-review-box"></div>
+      </section>
+
+      <section id="log-review-panel" class="panel stage-card hidden">
+        <h2 class="section-heading">対戦ログ</h2>
+        <div id="player-log" class="player-log"></div>
+      </section>
+    </section>
+    <div class="player-footer-copy">©amaoto_jp</div>
   </div>
   <script src="data/data.js"></script>
   <script src="js/config.js"></script>
@@ -109,5 +180,6 @@
   <script src="js/common.js"></script>
   <script src="js/battle-engine.js"></script>
   <script src="js/player.js"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>

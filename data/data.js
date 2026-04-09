@@ -9,7 +9,9 @@ window.AM_DATA = {
       "hp": 100,
       "description": "対戦のベースになるボディカード",
       "animationNote": "登場時にふわっと表示",
-      "notes": ""
+      "notes": "",
+      "iconFile": "icon_body_plain.png",
+      "iconPath": "assets/images/ui/icon_body_plain.png"
     },
     {
       "bodyId": "body_002",
@@ -20,7 +22,9 @@ window.AM_DATA = {
       "hp": 100,
       "description": "対戦のベースになるボディカード",
       "animationNote": "登場時にふわっと表示",
-      "notes": ""
+      "notes": "",
+      "iconFile": "icon_body_guitar.png",
+      "iconPath": "assets/images/ui/icon_body_guitar.png"
     }
   ],
   "cards": [
@@ -32,7 +36,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "浮遊",
       "skillKey": "float",
-      "effectShort": "次に受ける「たたかう」を無効にする",
+      "effectShort": "次に受ける通常攻撃を無効にする",
       "animationKey": "float_light",
       "animationNote": "ふわっと浮かび上がる青白い光",
       "notes": ""
@@ -45,7 +49,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "トラブル回避",
       "skillKey": "trouble_guard",
-      "effectShort": "相手の次のスキルを無効にする",
+      "effectShort": "相手の次の行動を無効にする",
       "animationKey": "trouble_block",
       "animationNote": "バリアや×マークが一瞬出る",
       "notes": ""
@@ -58,7 +62,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "体術",
       "skillKey": "martial_arts",
-      "effectShort": "次の「たたかう」のダメージを10上げる",
+      "effectShort": "次の攻撃のダメージを10上げる",
       "animationKey": "martial_flash",
       "animationNote": "素早い打撃線や赤い閃光",
       "notes": ""
@@ -162,7 +166,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "切れ味UP",
       "skillKey": "sharpness",
-      "effectShort": "次の「たたかう」のダメージを8上げる",
+      "effectShort": "次の攻撃のダメージを8上げる",
       "animationKey": "sharp_slash",
       "animationNote": "鋭い斬線や白い閃き",
       "notes": ""
@@ -175,7 +179,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "やる気UP",
       "skillKey": "motivation",
-      "effectShort": "次の2ターン、「たたかう」のダメージを6上げる",
+      "effectShort": "次の2ターン、攻撃のダメージを6上げる",
       "animationKey": "motivation_flare",
       "animationNote": "燃えるようなオーラや気合の光",
       "notes": ""
@@ -240,7 +244,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "ステルス",
       "skillKey": "stealth",
-      "effectShort": "次の相手の攻撃を無効にし、次の自分の「たたかう」のダメージを8上げる",
+      "effectShort": "次の相手の攻撃を無効にし、次の自分の攻撃のダメージを8上げる",
       "animationKey": "stealth_smoke",
       "animationNote": "煙や影に溶けるような演出",
       "notes": ""
@@ -253,7 +257,7 @@ window.AM_DATA = {
       "rarity": "★3",
       "skillName": "不思議な力",
       "skillKey": "mystic_power",
-      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次の『たたかう』のダメージ+8」のどれかが発動する",
+      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次の攻撃のダメージ+8」のどれかが発動する",
       "animationKey": "mystic_orb",
       "animationNote": "紫や虹色の球体、魔法陣っぽい光",
       "notes": ""
@@ -279,7 +283,7 @@ window.AM_DATA = {
       "rarity": "★3",
       "skillName": "話術",
       "skillKey": "speech",
-      "effectShort": "相手の次の「たたかう」のダメージを8下げる",
+      "effectShort": "相手の次の攻撃のダメージを8下げる",
       "animationKey": "speech_wave",
       "animationNote": "吹き出しや音波が広がる",
       "notes": ""
@@ -310,7 +314,7 @@ window.AM_DATA = {
     {
       "skillName": "話術",
       "skillKey": "speech",
-      "effectShort": "相手の次の「たたかう」のダメージを8下げる",
+      "effectShort": "相手の次の攻撃のダメージを8下げる",
       "effectType": "妨害",
       "animationKey": "speech_wave",
       "animationNote": "吹き出しや音波が広がる"
@@ -326,7 +330,7 @@ window.AM_DATA = {
     {
       "skillName": "浮遊",
       "skillKey": "float",
-      "effectShort": "次に受ける「たたかう」を無効にする",
+      "effectShort": "次に受ける通常攻撃を無効にする",
       "effectType": "防御",
       "animationKey": "float_light",
       "animationNote": "ふわっと浮かび上がる青白い光"
@@ -334,7 +338,7 @@ window.AM_DATA = {
     {
       "skillName": "トラブル回避",
       "skillKey": "trouble_guard",
-      "effectShort": "相手の次のスキルを無効にする",
+      "effectShort": "相手の次の行動を無効にする",
       "effectType": "妨害",
       "animationKey": "trouble_block",
       "animationNote": "バリアや×マークが一瞬出る"
@@ -342,7 +346,7 @@ window.AM_DATA = {
     {
       "skillName": "体術",
       "skillKey": "martial_arts",
-      "effectShort": "次の「たたかう」のダメージを10上げる",
+      "effectShort": "次の攻撃のダメージを10上げる",
       "effectType": "攻撃",
       "animationKey": "martial_flash",
       "animationNote": "素早い打撃線や赤い閃光"
@@ -406,7 +410,7 @@ window.AM_DATA = {
     {
       "skillName": "切れ味UP",
       "skillKey": "sharpness",
-      "effectShort": "次の「たたかう」のダメージを8上げる",
+      "effectShort": "次の攻撃のダメージを8上げる",
       "effectType": "攻撃",
       "animationKey": "sharp_slash",
       "animationNote": "鋭い斬線や白い閃き"
@@ -414,7 +418,7 @@ window.AM_DATA = {
     {
       "skillName": "やる気UP",
       "skillKey": "motivation",
-      "effectShort": "次の2ターン、「たたかう」のダメージを6上げる",
+      "effectShort": "次の2ターン、攻撃のダメージを6上げる",
       "effectType": "攻撃",
       "animationKey": "motivation_flare",
       "animationNote": "燃えるようなオーラや気合の光"
@@ -430,7 +434,7 @@ window.AM_DATA = {
     {
       "skillName": "不思議な力",
       "skillKey": "mystic_power",
-      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次の『たたかう』のダメージ+8」のどれかが発動する",
+      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次の攻撃のダメージ+8」のどれかが発動する",
       "effectType": "特殊",
       "animationKey": "mystic_orb",
       "animationNote": "紫や虹色の球体、魔法陣っぽい光"
@@ -462,7 +466,7 @@ window.AM_DATA = {
     {
       "skillName": "ステルス",
       "skillKey": "stealth",
-      "effectShort": "次の相手の攻撃を無効にし、次の自分の「たたかう」のダメージを8上げる",
+      "effectShort": "次の相手の攻撃を無効にし、次の自分の攻撃のダメージを8上げる",
       "effectType": "防御",
       "animationKey": "stealth_smoke",
       "animationNote": "煙や影に溶けるような演出"
@@ -472,33 +476,33 @@ window.AM_DATA = {
     {
       "key": "punch",
       "label": "こぶし",
-      "damage": 14
+      "damage": 18,
+      "limit": null
     },
     {
       "key": "kick",
       "label": "足蹴り",
-      "damage": 18
+      "damage": 24,
+      "limit": 2
     },
     {
       "key": "throw",
       "label": "背負い投げ",
-      "damage": 24
+      "damage": 32,
+      "limit": 1
     }
   ],
   "rulesText": [
-    "HP100で開始",
-    "毎ターン1行動",
-    "通常回復は25回復・1試合2回まで",
-    "瀕死回復はHP15以下で1回だけ、HP80まで回復",
-    "スキルは3枚まで、各1回",
-    "10ターン終了時は残りHPが多い方の勝ち",
-    "参加費は50Gずつ、勝者は100G獲得",
-    "金運UPを使って勝つと獲得Gが増える"
+    "各プレイヤーはボディ1枚とスキルカード3枚を選択し、スキルはそれぞれ1回ずつ発動できます。",
+    "1ターン目のみ先攻/後攻はランダム。2ターン目以降は交互です。",
+    "通常行動は 攻撃 / 回復 / 防御 / 回避 / スキル の5つです。",
+    "こぶし18ダメージ / 足蹴り24ダメージ(2回まで) / 背負い投げ32ダメージ(1回まで)",
+    "回復はHP20回復、防御は被ダメージ10軽減、回避は相手の通常攻撃を無効化します。",
+    "瀕死回復はHP15以下で選択可能。致死ダメージ時も例外的に発動し、HP50まで回復します。",
+    "エントリー時に所持ゴールドとベット額を入力します。最低ベットは50Gです。",
+    "所持金が50G未満のときは、不足分だけ借金して最低ベット50Gで参加します。"
   ],
   "twicaText": [
-    "TwiCaで獲得したカードの中から3枚選んでください。",
-    "持っているカードは、TwiCaにTwitchでログインして「My Collection」から確認できます。",
-    "TwiCaはこちら：https://twica.bluemoon.works/ （別タブで開けます）",
     "カードの選択は自己申告でお願いします。"
   ]
 };

@@ -3,63 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>あまおと丸のリスナーバトル / マスター画面</title>
+  <title>あまおと丸ぷれぜんつ｜リスナーバトル / マスター</title>
+  <meta name="theme-color" content="#1eb0eb" />
+  <meta name="application-name" content="あまおと丸ぷれぜんつ｜リスナーバトル" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="リスナーバトル" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/ui/webappicon_ios.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/ui/webappicon_android.png" />
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/master.css" />
 </head>
 <body class="master-page">
-  <div class="container">
-<header class="page-header">
-  <div class="header-title">
-    <h1>あまおと丸のリスナーバトル / マスター画面</h1>
-    <p>進行用の管理画面です。対戦開始、ターン解決、状態確認をここで行います。</p>
-  </div>
-  <div class="header-actions">
-    <button type="button" class="secondary" data-open-rules>ルール確認</button>
-  </div>
-</header>
-
-<section class="panel top-action-panel">
-  <div class="section-title-row">
-    <h2>行動入力状況</h2>
-    <div class="section-sub">各プレイヤーがこのターンの行動を選び終えたかをここで確認します</div>
-  </div>
-  <div id="action-status" class="action-status-bar"></div>
-</section>
-
-<section class="panel">
-  <div class="form-grid">
-    <div>
-      <label for="master-room-code">ルームコード</label>
-      <input id="master-room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
-    </div>
-    <div style="grid-column: span 2;">
-      <label>操作</label>
-      <div class="master-toolbar">
-        <button type="button" id="create-room">ルーム作成 / 初期化</button>
-        <button type="button" id="start-match">対戦開始</button>
-        <button type="button" id="resolve-turn" class="attention">ターン実行</button>
-        <button type="button" class="secondary" id="show-spectator-rules">観戦画面にルール表示</button>
-        <button type="button" class="secondary" id="reset-match">リセット</button>
+  <div class="player-page-overlay master-page-overlay"></div>
+  <div class="container master-container">
+    <header class="page-header master-header">
+      <div class="master-logo-wrap">
+        <img src="assets/images/ui/game_logo_wide.png" alt="あまおと丸のリスナーバトル" class="master-logo-wide" />
       </div>
-    </div>
-  </div>
-  <div id="state-summary" class="master-top-summary"></div>
-</section>
+    </header>
 
-<section class="panel">
-  <div class="section-title-row">
-    <h2>プレイヤー状況</h2>
-    <div class="section-sub">行動入力の有無を上部で確認できます</div>
-  </div>
-  <div id="player-columns" class="master-columns"></div>
-</section>
+    <section class="panel master-panel master-action-panel">
+      <div class="section-title-row master-title-row">
+        <div>
+          <h2 class="section-heading">マスター操作パネル</h2>
+          <div class="section-sub">フェーズに応じて必要な操作だけを表示します</div>
+        </div>
+      </div>
+      <div class="form-grid master-control-grid">
+        <div>
+          <label for="master-room-code">ルームコード</label>
+          <input id="master-room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
+        </div>
+        <div class="master-toolbar-wrap">
+          <label>操作</label>
+          <div class="master-toolbar">
+            <button type="button" id="create-room">ルーム作成</button>
+            <button type="button" id="start-match">対戦開始</button>
+            <button type="button" id="rematch-match">再戦</button>
+            <button type="button" id="resolve-turn" class="attention">ターン実行</button>
+            <button type="button" class="secondary" id="reset-match">リセット</button>
+          </div>
+          <div class="master-subtoolbar" id="bet-visibility-toolbar">
+            <button type="button" id="show-bet-overlay">BET額の表示</button>
+            <button type="button" id="hide-bet-overlay">BET額を非表示</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<section class="panel">
-  <h2>バトルログ</h2>
-  <ol id="master-log" class="log-list"></ol>
-</section>
+    <section class="panel top-action-panel master-panel">
+      <div class="section-title-row">
+        <h2>行動状況</h2>
+        <div class="section-sub">入力状況と決着情報をここで確認します</div>
+      </div>
+      <div id="action-status" class="action-status-bar"></div>
+    </section>
 
+    <section class="panel master-panel">
+      <div class="section-title-row">
+        <h2>プレイヤー状況</h2>
+        <div class="section-sub">必要なときだけ詳細を開いて確認できます</div>
+      </div>
+      <div id="player-columns" class="master-player-sections"></div>
+      <div class="master-status-review-block">
+        <div class="master-subsection-title">対戦状況の確認</div>
+        <div id="master-status-review" class="status-panels"></div>
+      </div>
+    </section>
+
+    <section class="panel master-panel">
+      <div class="section-title-row">
+        <h2>バトルログ</h2>
+        <div class="section-sub">プレイヤー画面と同じ見え方で表示します</div>
+      </div>
+      <div id="master-log" class="player-log"></div>
+    </section>
   </div>
   <script src="data/data.js"></script>
   <script src="js/config.js"></script>
@@ -67,5 +87,6 @@
   <script src="js/common.js"></script>
   <script src="js/battle-engine.js"></script>
   <script src="js/master.js"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>
