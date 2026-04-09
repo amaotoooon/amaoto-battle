@@ -1,7 +1,7 @@
 {
   "name": "あまおと丸ぷれぜんつ｜リスナーバトル",
   "short_name": "リスナーバトル",
-  "description": "あまおと丸ぷれぜんつ｜リスナーバトル プレイヤー画面",
+  "description": "あまおと丸ぷれぜんつ｜リスナーバトル",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -25,6 +25,47 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "プレイヤー",
+      "short_name": "プレイヤー",
+      "description": "プレイヤー画面を開く",
+      "url": "./index.html",
+      "icons": [
+        {
+          "src": "assets/images/ui/webappicon_android.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "観戦",
+      "short_name": "観戦",
+      "description": "観戦画面を開く",
+      "url": "./spectator.html",
+      "icons": [
+        {
+          "src": "assets/images/ui/webappicon_android.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "マスター",
+      "short_name": "マスター",
+      "description": "マスター画面を開く",
+      "url": "./master.html",
+      "icons": [
+        {
+          "src": "assets/images/ui/webappicon_android.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
