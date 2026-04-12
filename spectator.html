@@ -17,20 +17,22 @@
 </head>
 <body class="spectator-page">
   <div class="container spectator-container">
-    <header class="page-header spectator-header-minimal">
+    <header class="page-header spectator-header-minimal spectator-top-header">
       <div class="header-title spectator-logo-title"><img src="assets/images/ui/game_logo_wide.png" alt="あまおと丸のリスナーバトル" class="spectator-logo-wide" /></div>
-      <div class="header-actions spectator-header-actions">
-        <input id="spectator-room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
-      </div>
-    </header>
-    <section class="panel turn-summary-panel v14-panel">
       <div id="phase-banner" class="phase-banner">対戦開始前</div>
+      <div class="header-actions spectator-header-actions"><input id="spectator-room-code" class="room-code-box" value="AMAOTO1" placeholder="ルームコードを入力" /></div>
+    </header>
+    <section class="turn-summary-panel">
       <div id="top-ready-row" class="top-ready-row"></div>
       <div id="chat-row" class="chat-row"></div>
     </section>
     <section class="spectator-battle-grid panel v14-panel">
       <div id="spectator-left"></div>
       <div id="spectator-right"></div>
+    </section>
+    <section class="panel spectator-log-panel v14-panel">
+      <div class="spectator-log-header"><span>対戦ログ</span><span id="spectator-log-state" class="spectator-log-state"></span></div>
+      <div id="spectator-turn-log" class="spectator-turn-log"></div>
     </section>
     <section id="bet-overlay" class="bet-overlay hidden"></section>
     <section id="result-overlay" class="result-overlay hidden"></section>

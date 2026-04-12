@@ -32,23 +32,27 @@
         </div>
       </div>
       <div class="form-grid master-control-grid">
-        <div>
+        <div class="master-room-block">
           <label for="master-room-code">ルームコード</label>
           <input id="master-room-code" value="AMAOTO1" placeholder="ルームコードを入力" />
+          <div id="master-room-current" class="master-room-current hidden"></div>
         </div>
         <div class="master-toolbar-wrap">
-          <label>操作</label>
+          <label>進行操作</label>
           <div class="master-toolbar">
             <button type="button" id="create-room">ルーム作成</button>
             <button type="button" id="start-match">対戦開始</button>
             <button type="button" id="rematch-match">再戦</button>
-            <button type="button" id="resolve-turn" class="attention">ターン実行</button>
+            <button type="button" id="resolve-turn" class="attention">ターン実行(先攻)</button>
             <button type="button" class="secondary" id="reset-match">リセット</button>
           </div>
-          <div class="master-subtoolbar" id="bet-visibility-toolbar">
+          <div class="master-subtoolbar-wrap"><div class="master-subtoolbar-label">表示制御</div><div class="master-subtoolbar" id="bet-visibility-toolbar">
             <button type="button" id="show-bet-overlay">BET額の表示</button>
             <button type="button" id="hide-bet-overlay">BET額を非表示</button>
-          </div>
+            <button type="button" id="toggle-log-view">対戦ログ：先後攻切り替え</button>
+            <button type="button" id="toggle-result-overlay">リザルト表示切り替え</button>
+          </div></div>
+          <div id="room-create-status" class="master-room-create-status"></div>
         </div>
       </div>
     </section>
@@ -75,9 +79,10 @@
 
     <section class="panel master-panel">
       <div class="section-title-row">
-        <h2>バトルログ</h2>
+        <h2>対戦ログ</h2>
         <div class="section-sub">プレイヤー画面と同じ見え方で表示します</div>
       </div>
+      <div class="turn-select-wrap hidden" id="master-turn-select-wrap"><select id="master-turn-select"></select></div>
       <div id="master-log" class="player-log"></div>
     </section>
   </div>
@@ -87,6 +92,7 @@
   <script src="js/common.js"></script>
   <script src="js/battle-engine.js"></script>
   <script src="js/master.js"></script>
+  <script src="js/master-auth-guard.js"></script>
   <script src="js/pwa.js"></script>
 </body>
 </html>

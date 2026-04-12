@@ -22,19 +22,18 @@
       <div class="player-flow-logo-wrap">
         <img src="assets/images/ui/game_logo_wide.png" alt="あまおと丸ぷれぜんつ リスナーカードバトル" class="player-flow-logo" />
       </div>
-      <div class="header-actions player-flow-actions">
-        <button type="button" class="danger exit-top" data-exit-top>退出する</button>
-        <button type="button" class="info" data-open-rules>ルール・戦闘の流れ</button>
-      </div>
+      <div class="header-actions player-flow-actions"></div>
     </header>
 
     <section id="intro-stage" class="intro-stage-shell">
+      <button type="button" id="open-top-menu" class="top-menu-button">☰</button>
       <div class="intro-stage-center">
         <img src="assets/images/ui/game_logo.png" alt="あまおと丸ぷれぜんつ リスナーカードバトル" class="intro-main-logo" />
         <p class="intro-copy">リスナー最強を目指せ</p>
         <div class="entry-actions intro-actions">
           <button type="button" id="start-entry" class="primary-cta large">エントリーする</button>
         </div>
+        <div class="intro-footer-links"><span class="player-footer-copy intro-copy-footer">©amaoto_jp</span><a href="master-login.html" class="master-entry-link">マスター画面へ</a></div>
       </div>
     </section>
 
@@ -109,6 +108,7 @@
             <div class="section-sub">選択中: <span id="deck-count">0</span> / 3</div>
           </div>
           <div id="twica-box" class="twica-box"></div>
+          <div id="deck-bonus-note" class="deck-bonus-note hidden"></div>
           <div class="skill-select-wrap">
             <div class="skill-picks">
               <div><label for="card-select-1">スキルカード①</label><select id="card-select-1" class="card-select"></select></div>
@@ -133,7 +133,7 @@
         <div id="phase-box" class="phase-wrap"></div>
       </section>
 
-      <section class="panel stage-card message-stage-panel">
+      <section class="panel stage-card message-stage-panel hidden">
         <h2 class="section-heading">ひとことメッセージ</h2>
         <div class="message-row">
           <input id="player-message" placeholder="ひとことを入力" maxlength="40" />
@@ -152,13 +152,15 @@
           <div class="quick-links">
             <button type="button" class="secondary" id="open-entry-review">エントリー内容の確認</button>
             <button type="button" class="secondary" id="open-status-review">対戦状況の確認</button>
-            <button type="button" class="secondary" id="open-log-review">対戦ログ</button>
           </div>
         </div>
       </section>
 
       <section id="status-review-panel" class="panel stage-card hidden">
-        <h2 class="section-heading">対戦状況の確認</h2>
+        <div class="section-title-row">
+          <h2 class="section-heading">対戦ログ</h2>
+          <div class="turn-select-wrap hidden" id="turn-select-wrap"><select id="turn-select"></select></div>
+        </div>
         <div id="status-box" class="status-panels"></div>
       </section>
 
@@ -167,11 +169,12 @@
         <div id="entry-review-box" class="entry-review-box"></div>
       </section>
 
-      <section id="log-review-panel" class="panel stage-card hidden">
+      <section id="log-review-panel" class="panel stage-card hidden always-hidden">
         <h2 class="section-heading">対戦ログ</h2>
         <div id="player-log" class="player-log"></div>
       </section>
     </section>
+    <div id="floating-chat-widget" class="floating-chat-widget hidden"></div>
     <div class="player-footer-copy">©amaoto_jp</div>
   </div>
   <script src="data/data.js"></script>

@@ -151,3 +151,15 @@ input::placeholder { color: rgba(229,238,251,.5); }
 
 .hp-shield-inline{display:inline-flex;align-items:center;gap:4px;margin-left:6px;font-size:.9em;font-weight:900;color:inherit;vertical-align:baseline;}
 .shield-inline-icon{margin-right:0;vertical-align:middle;}
+
+.rules-modal-panel{
+  background:#000;
+  color:#fff;
+  border-color:rgba(255,255,255,.16);
+  max-height:min(82vh,900px);
+  overflow:auto;
+}
+.rules-modal-panel .rules-block p,
+.rules-modal-panel .rules-block ul,
+.rules-modal-panel .rules-block h3{color:#fff;}
+.rules-modal-panel .rules-block p{opacity:.94;}

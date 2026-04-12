@@ -36,7 +36,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "浮遊",
       "skillKey": "float",
-      "effectShort": "次に受ける通常攻撃を無効にする",
+      "effectShort": "次ターンで受ける攻撃ダメージを無効にする",
       "animationKey": "float_light",
       "animationNote": "ふわっと浮かび上がる青白い光",
       "notes": ""
@@ -49,7 +49,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "トラブル回避",
       "skillKey": "trouble_guard",
-      "effectShort": "相手の次の行動を無効にする",
+      "effectShort": "次ターン、相手の攻撃ダメージを無効化し、自分の攻撃ダメージを8上げる",
       "animationKey": "trouble_block",
       "animationNote": "バリアや×マークが一瞬出る",
       "notes": ""
@@ -62,7 +62,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "体術",
       "skillKey": "martial_arts",
-      "effectShort": "次の攻撃のダメージを10上げる",
+      "effectShort": "次ターンの攻撃ダメージを10上げる",
       "animationKey": "martial_flash",
       "animationNote": "素早い打撃線や赤い閃光",
       "notes": ""
@@ -88,7 +88,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "代謝向上",
       "skillKey": "metabolism",
-      "effectShort": "3ターンの間、ターン終了時にHPを5回復する",
+      "effectShort": "次の3ターン、HPを5ずつ回復する(行動前に回復発動)",
       "animationKey": "metabolism_glow",
       "animationNote": "体の周りにじんわり緑の光",
       "notes": ""
@@ -127,7 +127,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "いたずら",
       "skillKey": "prank",
-      "effectShort": "相手の次の行動をランダム化する",
+      "effectShort": "次ターン、相手の行動をランダム化する（有効選択肢から）",
       "animationKey": "prank_noise",
       "animationNote": "ノイズやぐにゃっとした悪戯エフェクト",
       "notes": ""
@@ -140,7 +140,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "やさしさ",
       "skillKey": "kindness",
-      "effectShort": "HPを15回復し、次に受けるダメージを5減らす",
+      "effectShort": "HPを15回復し、次ターンで受けるダメージを5減らす",
       "animationKey": "kindness_soft",
       "animationNote": "やわらかい光と小さなハート",
       "notes": ""
@@ -153,7 +153,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "柔軟性",
       "skillKey": "flexibility",
-      "effectShort": "次の2回、受けるダメージを6減らす",
+      "effectShort": "次の2ターン、受けるダメージを6減らす",
       "animationKey": "flex_swing",
       "animationNote": "しなる線やひらりと避ける動き",
       "notes": ""
@@ -166,7 +166,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "切れ味UP",
       "skillKey": "sharpness",
-      "effectShort": "次の攻撃のダメージを8上げる",
+      "effectShort": "次ターンの攻撃ダメージを8上げる",
       "animationKey": "sharp_slash",
       "animationNote": "鋭い斬線や白い閃き",
       "notes": ""
@@ -179,7 +179,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "やる気UP",
       "skillKey": "motivation",
-      "effectShort": "次の2ターン、攻撃のダメージを6上げる",
+      "effectShort": "次の2ターン、攻撃ダメージを6上げる",
       "animationKey": "motivation_flare",
       "animationNote": "燃えるようなオーラや気合の光",
       "notes": ""
@@ -192,7 +192,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "スタミナUP",
       "skillKey": "stamina",
-      "effectShort": "シールド20を得る",
+      "effectShort": "発動ターン時、シールド20を得る",
       "animationKey": "stamina_shield",
       "animationNote": "しっかりした青い盾が出る",
       "notes": ""
@@ -205,7 +205,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "冷静力",
       "skillKey": "calm_mind",
-      "effectShort": "次に受けるダメージを10減らす",
+      "effectShort": "次ターンで受けるダメージを10減らす",
       "animationKey": "calm_blue",
       "animationNote": "静かな青い光と波紋",
       "notes": ""
@@ -218,7 +218,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "礼儀・作法",
       "skillKey": "manners",
-      "effectShort": "HPを10回復し、相手の次の妨害系スキルを無効にする",
+      "effectShort": "HPを10回復し、次ターンの相手のスキル発動を無効化する",
       "animationKey": "manners_shine",
       "animationNote": "上品な白いきらめきや整った光",
       "notes": ""
@@ -244,7 +244,7 @@ window.AM_DATA = {
       "rarity": "★2",
       "skillName": "ステルス",
       "skillKey": "stealth",
-      "effectShort": "次の相手の攻撃を無効にし、次の自分の攻撃のダメージを8上げる",
+      "effectShort": "次ターン、相手の攻撃ダメージを無効化し、自分の攻撃ダメージを8上げる",
       "animationKey": "stealth_smoke",
       "animationNote": "煙や影に溶けるような演出",
       "notes": ""
@@ -257,7 +257,7 @@ window.AM_DATA = {
       "rarity": "★3",
       "skillName": "不思議な力",
       "skillKey": "mystic_power",
-      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次の攻撃のダメージ+8」のどれかが発動する",
+      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次ターンの攻撃ダメージ+8」のどれかが発動する",
       "animationKey": "mystic_orb",
       "animationNote": "紫や虹色の球体、魔法陣っぽい光",
       "notes": ""
@@ -270,7 +270,7 @@ window.AM_DATA = {
       "rarity": "★3",
       "skillName": "魅力UP",
       "skillKey": "charm_up",
-      "effectShort": "HPを25回復し、次に受けるダメージを半減する",
+      "effectShort": "HPを25回復し、次ターンで受けるダメージが半減する",
       "animationKey": "charm_shine",
       "animationNote": "ピンク〜紫のきらめきがふわっと広がる",
       "notes": ""
@@ -283,7 +283,7 @@ window.AM_DATA = {
       "rarity": "★3",
       "skillName": "話術",
       "skillKey": "speech",
-      "effectShort": "相手の次の攻撃のダメージを8下げる",
+      "effectShort": "次ターン、相手の攻撃ダメージを8下げる",
       "animationKey": "speech_wave",
       "animationNote": "吹き出しや音波が広がる",
       "notes": ""
@@ -296,7 +296,7 @@ window.AM_DATA = {
       "rarity": "★4",
       "skillName": "金運UP",
       "skillKey": "gold_luck",
-      "effectShort": "このスキルを使った試合で勝つと、獲得Gが1.2〜1.8倍になる",
+      "effectShort": "この試合で勝利した場合、獲得Gが1.2〜1.8倍になる",
       "animationKey": "gold_rain",
       "animationNote": "金色のコインやきらめきが降る",
       "notes": ""
@@ -306,7 +306,7 @@ window.AM_DATA = {
     {
       "skillName": "金運UP",
       "skillKey": "gold_luck",
-      "effectShort": "このスキルを使った試合で勝つと、獲得Gが1.2〜1.8倍になる",
+      "effectShort": "この試合で勝利した場合、獲得Gが1.2〜1.8倍になる",
       "effectType": "特殊",
       "animationKey": "gold_rain",
       "animationNote": "金色のコインやきらめきが降る"
@@ -314,7 +314,7 @@ window.AM_DATA = {
     {
       "skillName": "話術",
       "skillKey": "speech",
-      "effectShort": "相手の次の攻撃のダメージを8下げる",
+      "effectShort": "次ターン、相手の攻撃ダメージを8下げる",
       "effectType": "妨害",
       "animationKey": "speech_wave",
       "animationNote": "吹き出しや音波が広がる"
@@ -322,7 +322,7 @@ window.AM_DATA = {
     {
       "skillName": "魅力UP",
       "skillKey": "charm_up",
-      "effectShort": "HPを25回復し、次に受けるダメージを半減する",
+      "effectShort": "HPを25回復し、次ターンで受けるダメージが半減する",
       "effectType": "回復",
       "animationKey": "charm_shine",
       "animationNote": "ピンク〜紫のきらめきがふわっと広がる"
@@ -330,7 +330,7 @@ window.AM_DATA = {
     {
       "skillName": "浮遊",
       "skillKey": "float",
-      "effectShort": "次に受ける通常攻撃を無効にする",
+      "effectShort": "次ターンで受ける攻撃ダメージを無効にする",
       "effectType": "防御",
       "animationKey": "float_light",
       "animationNote": "ふわっと浮かび上がる青白い光"
@@ -338,7 +338,7 @@ window.AM_DATA = {
     {
       "skillName": "トラブル回避",
       "skillKey": "trouble_guard",
-      "effectShort": "相手の次の行動を無効にする",
+      "effectShort": "次ターン、相手の攻撃ダメージを無効化し、自分の攻撃ダメージを8上げる",
       "effectType": "妨害",
       "animationKey": "trouble_block",
       "animationNote": "バリアや×マークが一瞬出る"
@@ -346,7 +346,7 @@ window.AM_DATA = {
     {
       "skillName": "体術",
       "skillKey": "martial_arts",
-      "effectShort": "次の攻撃のダメージを10上げる",
+      "effectShort": "次ターンの攻撃ダメージを10上げる",
       "effectType": "攻撃",
       "animationKey": "martial_flash",
       "animationNote": "素早い打撃線や赤い閃光"
@@ -362,7 +362,7 @@ window.AM_DATA = {
     {
       "skillName": "代謝向上",
       "skillKey": "metabolism",
-      "effectShort": "3ターンの間、ターン終了時にHPを5回復する",
+      "effectShort": "次の3ターン、HPを5ずつ回復する(行動前に回復発動)",
       "effectType": "回復",
       "animationKey": "metabolism_glow",
       "animationNote": "体の周りにじんわり緑の光"
@@ -386,7 +386,7 @@ window.AM_DATA = {
     {
       "skillName": "いたずら",
       "skillKey": "prank",
-      "effectShort": "相手の次の行動をランダム化する",
+      "effectShort": "次ターン、相手の行動をランダム化する（有効選択肢から）",
       "effectType": "妨害",
       "animationKey": "prank_noise",
       "animationNote": "ノイズやぐにゃっとした悪戯エフェクト"
@@ -394,7 +394,7 @@ window.AM_DATA = {
     {
       "skillName": "やさしさ",
       "skillKey": "kindness",
-      "effectShort": "HPを15回復し、次に受けるダメージを5減らす",
+      "effectShort": "HPを15回復し、次ターンで受けるダメージを5減らす",
       "effectType": "回復",
       "animationKey": "kindness_soft",
       "animationNote": "やわらかい光と小さなハート"
@@ -402,7 +402,7 @@ window.AM_DATA = {
     {
       "skillName": "柔軟性",
       "skillKey": "flexibility",
-      "effectShort": "次の2回、受けるダメージを6減らす",
+      "effectShort": "次の2ターン、受けるダメージを6減らす",
       "effectType": "防御",
       "animationKey": "flex_swing",
       "animationNote": "しなる線やひらりと避ける動き"
@@ -410,7 +410,7 @@ window.AM_DATA = {
     {
       "skillName": "切れ味UP",
       "skillKey": "sharpness",
-      "effectShort": "次の攻撃のダメージを8上げる",
+      "effectShort": "次ターンの攻撃ダメージを8上げる",
       "effectType": "攻撃",
       "animationKey": "sharp_slash",
       "animationNote": "鋭い斬線や白い閃き"
@@ -418,7 +418,7 @@ window.AM_DATA = {
     {
       "skillName": "やる気UP",
       "skillKey": "motivation",
-      "effectShort": "次の2ターン、攻撃のダメージを6上げる",
+      "effectShort": "次の2ターン、攻撃ダメージを6上げる",
       "effectType": "攻撃",
       "animationKey": "motivation_flare",
       "animationNote": "燃えるようなオーラや気合の光"
@@ -426,7 +426,7 @@ window.AM_DATA = {
     {
       "skillName": "スタミナUP",
       "skillKey": "stamina",
-      "effectShort": "シールド20を得る",
+      "effectShort": "発動ターン時、シールド20を得る",
       "effectType": "防御",
       "animationKey": "stamina_shield",
       "animationNote": "しっかりした青い盾が出る"
@@ -434,7 +434,7 @@ window.AM_DATA = {
     {
       "skillName": "不思議な力",
       "skillKey": "mystic_power",
-      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次の攻撃のダメージ+8」のどれかが発動する",
+      "effectShort": "ランダムで「相手に20ダメージ」「HP20回復」「シールド15」「次ターンの攻撃ダメージ+8」のどれかが発動する",
       "effectType": "特殊",
       "animationKey": "mystic_orb",
       "animationNote": "紫や虹色の球体、魔法陣っぽい光"
@@ -442,7 +442,7 @@ window.AM_DATA = {
     {
       "skillName": "冷静力",
       "skillKey": "calm_mind",
-      "effectShort": "次に受けるダメージを10減らす",
+      "effectShort": "次ターンで受けるダメージを10減らす",
       "effectType": "防御",
       "animationKey": "calm_blue",
       "animationNote": "静かな青い光と波紋"
@@ -450,7 +450,7 @@ window.AM_DATA = {
     {
       "skillName": "礼儀・作法",
       "skillKey": "manners",
-      "effectShort": "HPを10回復し、相手の次の妨害系スキルを無効にする",
+      "effectShort": "HPを10回復し、次ターンの相手のスキル発動を無効化する",
       "effectType": "防御",
       "animationKey": "manners_shine",
       "animationNote": "上品な白いきらめきや整った光"
@@ -466,7 +466,7 @@ window.AM_DATA = {
     {
       "skillName": "ステルス",
       "skillKey": "stealth",
-      "effectShort": "次の相手の攻撃を無効にし、次の自分の攻撃のダメージを8上げる",
+      "effectShort": "次ターン、相手の攻撃ダメージを無効化し、自分の攻撃ダメージを8上げる",
       "effectType": "防御",
       "animationKey": "stealth_smoke",
       "animationNote": "煙や影に溶けるような演出"

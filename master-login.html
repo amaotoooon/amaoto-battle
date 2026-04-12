@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>あまおと丸ぷれぜんつ｜リスナーバトル / マスターログイン</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/player.css" />
+</head>
+<body class="player-page">
+  <div class="player-page-overlay"></div>
+  <div class="container player-container">
+    <section class="intro-stage-shell">
+      <div class="panel stage-card master-login-panel">
+        <h2 class="stage-title centered">マスター画面ログイン</h2>
+        <div class="form-grid single-col player-form-grid">
+          <div>
+            <label for="master-login-email">メールアドレス</label>
+            <input id="master-login-email" type="email" placeholder="メールアドレスを入力" />
+          </div>
+          <div>
+            <label for="master-login-password">パスワード</label>
+            <input id="master-login-password" type="password" placeholder="パスワードを入力" />
+          </div>
+        </div>
+        <div class="entry-actions stage-actions stage-actions-center">
+          <button type="button" id="master-login-submit" class="primary-cta">ログインしてマスター画面へ</button>
+          <a href="index.html" class="master-login-backlink">TOPへ戻る</a>
+          <div id="master-login-notice" class="submit-note"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/master-auth.js"></script>
+  <script src="js/pwa.js"></script>
+</body>
+</html>
