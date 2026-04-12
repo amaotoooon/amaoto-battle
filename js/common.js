@@ -77,7 +77,7 @@
       spectatorLogView: "first",
       roomCreated: false,
       chatHistory: [],
-      turnExecutionStage: "first",
+      turnExecutionStage: "selection",
       pendingTurnData: null
     };
   }
@@ -261,7 +261,7 @@
         <p>②デッキ構成はボディHP100＋スキルカード3枚です。<br>レア★2で揃えた場合のみ、デッキボーナスとして対戦開始時にシールド10を獲得できます。</p>
         <p>③どちらかのHPが0になったら対戦終了です。<br>10ターンで決着がつかない場合は、10ターン終了時の残HPが多い方が勝者となります。</p>
         <h3>毎ターンの行動</h3>
-        <p>${icon('assets/images/ui/icon_attack.png','攻撃(こぶし)')}：18〜22ダメージ<br>${icon('assets/images/ui/icon_attack.png','攻撃(足蹴り)')}：24ダメージ（2回まで）<br>${icon('assets/images/ui/icon_attack.png','攻撃(背負い投げ)')}：32ダメージ（1回まで）<br>${icon('assets/images/ui/icon_potion.png','回復')}：HP20回復（1回まで）<br>${icon('assets/images/ui/icon_shield.png','防御')}：ダメージ10軽減<br>${icon('assets/images/ui/icon_shield.png','回避')}：50％の確率で相手の攻撃を無効化<br>${icon('assets/images/ui/hi_01.png','反撃のドラ')}：HPを50まで回復（HP15以下で使用可能）<br>${icon('assets/images/ui/icon_book.png','スキル発動')}：1ゲームにつき各1回まで発動可能</p>
+        <p>${icon('assets/images/ui/icon_attack.png','攻撃(こぶし)')}：18〜22ダメージ<br>${icon('assets/images/ui/icon_attack.png','攻撃(足蹴り)')}：24ダメージ（2回まで）<br>${icon('assets/images/ui/icon_attack.png','攻撃(背負い投げ)')}：32ダメージ（1回まで）<br>${icon('assets/images/ui/icon_potion.png','回復')}：HP20回復（1回まで）<br>${icon('assets/images/ui/icon_shield.png','防御')}：ダメージ10軽減<br>${icon('assets/images/ui/icon_shield.png','回避')}：50％の確率で相手の攻撃を無効化<br>${icon('assets/images/ui/hi_01.png','反撃のドラ')}：HPを50まで回復（HP15以下で使用可能／「いたずら」のランダム対象）<br>${icon('assets/images/ui/icon_book.png','スキル発動')}：1ゲームにつき各1回まで発動可能</p>
         <h3>ヒント</h3>
         <p>先後攻によって効能差があるので、戦況を読んで行動選択しましょう。<br>うまく機能しなかった場合も、配信のエンタメとしてお楽しみください。</p>
       </div>`;
@@ -348,6 +348,28 @@
     return `${circledTurn(value)}ターン目`;
   }
 
+
+  function phaseTurnStatus(state, role, view = 'player') {
+    if (!state || state.phase !== 'battle') return '待機';
+    const firstRole = state.firstAttackRole || 'p1';
+    const isFirst = firstRole === role;
+    if (state.turnExecutionStage === 'selection') {
+      if (view === 'spectator') return `次：${isFirst ? '先' : '後'}`;
+      return '行動選択';
+    }
+    if (view === 'spectator') return isFirst ? '先' : '後';
+    return `${formatTurnLabel(state.turn)}：${isFirst ? '先攻' : '後攻'}`;
+  }
+
+  function battlePhaseLabel(state, joined) {
+    if (!state) return '対戦開始前';
+    if (state.phase === 'finished') return '対戦終了';
+    if (state.phase !== 'battle') return joined ? '対戦開始待ち' : '対戦開始前';
+    const turn = formatTurnLabel(state.turn);
+    if (state.turnExecutionStage === 'selection') return `${turn}行動選択中`;
+    return `${turn}`;
+  }
+
   function decorateLogLine(text) {
     const raw = String(text || '');
     if (raw.includes('<img')) return raw;
@@ -382,5 +404,5 @@
     return line;
   }
 
-  window.AM = { DEFAULT_ROOM, createEffects, createEmptyState, loadState, saveState, updateState, resetRoom, getPlayer, getOpponentRole, findBody, findCard, findCardBySkill, findSkill, getAttackMove, moveLabel, describeAction, formatHpShield, createCardHTML, createBodyHTML, createBodyIconHTML, createEffectBadges, openRulesModal, subscribeState, escapeHtml, broadcastState, circledTurn, formatTurnLabel, formatTurnLogLabel, decorateLogLine, createRulesHTML, renderHpShieldInline };
+  window.AM = { DEFAULT_ROOM, createEffects, createEmptyState, loadState, saveState, updateState, resetRoom, getPlayer, getOpponentRole, findBody, findCard, findCardBySkill, findSkill, getAttackMove, moveLabel, describeAction, formatHpShield, createCardHTML, createBodyHTML, createBodyIconHTML, createEffectBadges, openRulesModal, subscribeState, escapeHtml, broadcastState, circledTurn, formatTurnLabel, formatTurnLogLabel, decorateLogLine, createRulesHTML, renderHpShieldInline, phaseTurnStatus, battlePhaseLabel };
 })();

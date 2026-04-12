@@ -407,8 +407,6 @@
   function resolveReactiveDefenseAction(defenderAction, options = {}) {
     if (!defenderAction) return defenderAction;
     const { allowNormalGuardEvade = true } = options;
-    // 通常行動の「防御」「回避」は、先攻で選んだ場合でも後攻の攻撃には適用しない。
-    // ただし、スキル由来の無効化・軽減効果や反撃のドラは別処理で扱う。
     if (!allowNormalGuardEvade && (defenderAction.type === 'guard' || defenderAction.type === 'evade')) {
       return null;
     }
@@ -791,9 +789,6 @@
         secondResult = { hpNote: `${Math.max(0, second.hp - hpBefore[secondRole])}回復`, actionLabel: '反撃のドラ' };
       } else {
         const defenderReactiveAction = resolveReactiveDefenseAction(firstActionOriginal, { allowNormalGuardEvade: false });
-        if (!defenderReactiveAction && firstActionOriginal && (firstActionOriginal.type === 'guard' || firstActionOriginal.type === 'evade') && secondActionOriginal && secondActionOriginal.type === 'attack') {
-          secondLines.push(`${first.name}の通常行動「${selectedActionLabel(firstActionOriginal)}」は後攻の攻撃には適用されない。`);
-        }
         secondResult = processAction(second, first, secondActionOriginal, defenderReactiveAction, turn, secondLines, state);
       }
     } else {

@@ -57,6 +57,7 @@
   let chatPinnedToBottom = true;
   let chatPendingNew = false;
   let lastChatCount = 0;
+  let chatScrollOffsetFromBottom = 0;
 
   function setStage(next) {
     stage = next;
@@ -106,11 +107,7 @@
 
 
   function phaseLabel(state) {
-    if (state.phase === 'finished') return '対戦終了';
-    if (state.phase !== 'battle') return getPlayer(state).joined ? '対戦開始待ち' : '対戦開始前';
-    const me = getPlayer(state);
-    const turn = window.AM.formatTurnLabel(state.turn);
-    return `${turn}${me.actionLocked ? '実行待ち' : '行動選択中'}`;
+    return window.AM.battlePhaseLabel(state, getPlayer(state).joined);
   }
 
   function goldDisplay(player) {
@@ -373,7 +370,7 @@ https://dot-illust.net/`
     const oppRole = window.AM.getOpponentRole(selfRole);
     const player = getDisplaySnapshot(state, selfRole);
     const opponent = getDisplaySnapshot(state, oppRole);
-    phaseBox.className = `phase-wrap phase-${state.phase} compact-phase-wrap`;
+    phaseBox.className = `phase-wrap phase-${state.phase} compact-phase-wrap ${state.phase === 'battle' && state.turn === 10 ? 'final-turn' : ''}`;
     phaseBox.innerHTML = `
       <div class="phase-banner-plate rounded-all">${window.AM.escapeHtml(phaseLabel(state))}</div>
       <div class="phase-player-stack">
@@ -393,24 +390,35 @@ https://dot-illust.net/`
     const shieldWithin = Math.max(0, Math.min(100 - hp, shield));
     const overClass = hp + shield > 100 ? 'over' : '';
     const expanded = !!phaseDetailsOpen[key];
-    const turnNo = state.turnSummary?.turn || state.turn || 1;
-    const orderText = currentOrder(state) === '待機' ? '待機' : (state.firstAttackRole === role ? '先攻' : '後攻');
-    const turnLabel = state.phase === 'battle' ? `${window.AM.formatTurnLabel ? window.AM.formatTurnLabel(turnNo) : `ターン${turnNo}`}：${orderText}` : '対戦開始前';
-    const selected = (state.phase === 'battle' && state.turnSummary?.entries?.[role]?.choiceLabel) || selectedActionLabel(player.submittedAction) || '未入力';
+    const pendingFirstOnly = state.phase === 'battle' && state.turnExecutionStage === 'first' && state.pendingTurnData;
+    const allowSummary = !(pendingFirstOnly && role !== state.pendingTurnData.firstRole);
+    const currentSummary = state.phase === 'battle' && state.turnSummary && state.turnSummary.turn === state.turn ? state.turnSummary.entries?.[role] : null;
+    const inSelection = state.phase === 'battle' && state.turnExecutionStage === 'selection';
+    const badgeText = state.phase !== 'battle'
+      ? '対戦開始前'
+      : (inSelection ? (player.actionLocked ? '行動選択済み' : '行動選択中') : `${window.AM.formatTurnLabel(state.turn)}：${state.firstAttackRole === role ? '先攻' : '後攻'}`);
+    const badgeClass = inSelection ? (player.actionLocked ? 'selection-done' : 'selection') : ((state.firstAttackRole === role) ? 'first' : 'second');
+    const selected = allowSummary && currentSummary?.choiceLabel ? currentSummary.choiceLabel : '未入力';
+    const hpDeltaLabel = state.phase === 'battle'
+      ? ((state.turnSummary?.entries?.[role]?.currentHpDeltaLabel) || 'HP：変動なし')
+      : 'HP：変動なし';
     const effects = window.AM.createEffectBadges(player) || '<span class="empty-note compact">継続効果なし</span>';
     return `
       <div class="phase-player-card compact-phase-player-card ${expanded ? 'expanded' : ''}">
-        <div class="phase-player-toprow">
+        <div class="phase-player-toprow unified same-line-head">
           <div class="phase-player-name">${window.AM.escapeHtml(title)}</div>
-          <span class="phase-player-turnbadge ${orderText === '先攻' ? 'first' : orderText === '後攻' ? 'second' : 'idle'}">${window.AM.escapeHtml(turnLabel)}</span>
-          <button type="button" class="phase-expand-btn" data-phase-toggle="${key}" aria-expanded="${expanded ? 'true' : 'false'}">${expanded ? '－' : '＋'}</button>
+          <div class="phase-player-head-right">
+            <span class="phase-player-turnbadge ${badgeClass}">${window.AM.escapeHtml(badgeText)}</span>
+            <button type="button" class="phase-expand-btn" data-phase-toggle="${key}" aria-expanded="${expanded ? 'true' : 'false'}">${expanded ? '－' : '＋'}</button>
+          </div>
         </div>
         <div class="phase-player-hpbar-row spectator-like">
           <img src="assets/images/ui/icon_heart.png" alt="" class="status-heart" />
           <div class="hp-bar thick ${overClass}"><div class="hp-fill" style="width:${hp}%"></div>${shieldWithin > 0 ? `<div class="shield-fill" style="left:${hp}%;width:${shieldWithin}%"></div>` : ''}</div>
-          <div class="phase-player-hpnum"><span class="hp-main-value">${hp}</span>${shield > 0 ? `<span class="hp-shield-inline"><img src="assets/images/ui/icon_shield.png" alt="" class="inline-icon shield-inline-icon">${shield}</span>` : ''}</div>
+          <div class="phase-player-hpnum">${window.AM.renderHpShieldInline(hp, shield)}</div>
         </div>
-        <div class="phase-player-choice-row"><span class="choice-badge ${actionBadgeClass(selected)}">${window.AM.escapeHtml(selected)}</span></div>
+        <div class="phase-player-choice-row"><span class="choice-badge phase-choice-badge ${actionBadgeClass(selected)}">${window.AM.escapeHtml(selected)}</span></div>
+        <div class="phase-player-hpresult"><span class="hp-result-pill">${window.AM.escapeHtml(hpDeltaLabel)}</span></div>
         ${expanded ? `<div class="phase-player-detail">
           <div class="phase-detail-row single-line"><span class="phase-detail-chip">スキル残 ${Math.max(0, 3 - (player.usedSkills || []).length)}</span><span class="phase-detail-chip">回復残 ${Math.max(0, 1 - (player.normalHealUsed || 0))}</span><span class="phase-detail-chip">ドラ ${window.AM.escapeHtml(dragonState(player))}</span></div>
           <div class="effects-row phase-effects-row">${effects}</div>
@@ -505,13 +513,21 @@ https://dot-illust.net/`
     const throwRemaining = Math.max(0, 1 - (player.attackUsage?.throw || 0));
     const orderRole = nextOrder(state);
     const emergencyUnavailable = player.emergencyHealUsed || player.hp > 15;
-    const emergencyDesc = player.emergencyHealUsed ? '使用済み' : (player.hp > 15 ? 'HP15以下で使用可能' : 'HPを50まで回復');
+    const emergencyDesc = player.emergencyHealUsed
+      ? '使用済み'
+      : (player.hp > 15
+        ? 'HP15以下で使用可能<br>「いたずら」のランダム対象'
+        : 'HPを50まで回復<br>「いたずら」のランダム対象');
     const skillButtons = (player.selectedCards || []).map((id) => window.AM.findCard(id)).filter(Boolean).map((card) => {
       const disabled = player.usedSkills.includes(card.skillKey);
       const selectedCls = currentSelection?.type === 'skill' && currentSelection.skillKey === card.skillKey ? ' selected-choice' : '';
       return `<button type="button" class="minor-action action-skill ${disabled ? 'disabled' : ''}${selectedCls}" ${disabled ? 'disabled' : ''} data-type="skill" data-skill-key="${card.skillKey}"><span>${window.AM.escapeHtml(card.skillName)}</span><small>${window.AM.escapeHtml(card.effectShort)}</small></button>`;
     }).join('');
 
+    if (state.phase === 'battle' && state.turnExecutionStage !== 'selection') {
+      actionPanel.innerHTML = `<div class="selected-action-box waiting-master">マスターによる操作待ち</div>`;
+      return;
+    }
     if (player.actionLocked && player.submittedAction) {
       actionPanel.innerHTML = `
         <div class="action-header-row">
@@ -594,20 +610,28 @@ https://dot-illust.net/`
       scrollEl.scrollTop = scrollEl.scrollHeight;
       chatPinnedToBottom = true;
       chatPendingNew = false;
+      chatScrollOffsetFromBottom = 0;
+      chatScrollOffsetFromBottom = 0;
       if (jumpBtn) jumpBtn.classList.add('hidden');
     };
     if (scrollEl) {
       scrollEl.addEventListener('scroll', () => {
-        const nearBottom = scrollEl.scrollHeight - scrollEl.scrollTop - scrollEl.clientHeight < 24;
+        const offset = scrollEl.scrollHeight - scrollEl.scrollTop - scrollEl.clientHeight;
+        const nearBottom = offset < 24;
         chatPinnedToBottom = nearBottom;
+        chatScrollOffsetFromBottom = Math.max(0, offset);
         if (nearBottom) {
           chatPendingNew = false;
           if (jumpBtn) jumpBtn.classList.add('hidden');
         }
       }, { passive: true });
       requestAnimationFrame(() => {
-        if (chatPinnedToBottom) stickToBottom();
-        else if (chatPendingNew && jumpBtn) jumpBtn.classList.remove('hidden');
+        if (chatPinnedToBottom) {
+          stickToBottom();
+        } else {
+          scrollEl.scrollTop = Math.max(0, scrollEl.scrollHeight - scrollEl.clientHeight - chatScrollOffsetFromBottom);
+          if (chatPendingNew && jumpBtn) jumpBtn.classList.remove('hidden');
+        }
       });
     }
     if (jumpBtn) jumpBtn.onclick = stickToBottom;

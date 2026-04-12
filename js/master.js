@@ -4,6 +4,7 @@
   const startBtn = document.getElementById('start-match');
   const rematchBtn = document.getElementById('rematch-match');
   const resolveBtn = document.getElementById('resolve-turn');
+  const actionSelectBtn = document.getElementById('action-select-start');
   const resetBtn = document.getElementById('reset-match');
   const betToolbar = document.getElementById('bet-visibility-toolbar');
   const showBetBtn = document.getElementById('show-bet-overlay');
@@ -44,8 +45,7 @@
   }
 
   function currentOrderText(state, role) {
-    if (state.phase !== 'battle') return '待機';
-    return state.firstAttackRole === role ? '先攻' : '後攻';
+    return window.AM.phaseTurnStatus(state, role, 'master');
   }
 
   function nextOrderText(state, role) {
@@ -119,14 +119,13 @@
   function renderBattleStatusCard(state, role) {
     const player = getDisplaySnapshot(state, role);
     const summary = state.turnSummary?.entries?.[role];
-    const received = summary?.receivedLines?.length ? summary.receivedLines.join(' / ') : 'まだ実行結果がありません';
-    const currentAction = player.actionLocked ? actionSummary(player.submittedAction) : '未確定';
+    const hpDeltaLabel = summary?.currentHpDeltaLabel || 'HP：変動なし';
     return `
       <div class="status-card">
         <h3>${window.AM.escapeHtml(player.name || (role === 'p1' ? 'プレイヤー1' : 'プレイヤー2'))}</h3>
         ${renderHp(player)}
+        <div class="status-hp-result"><span class="hp-result-pill">${window.AM.escapeHtml(hpDeltaLabel)}</span></div>
         <div class="status-line">スキル ${(player.usedSkills || []).length}/3 ・ 回復 残${Math.max(0, 1 - (player.normalHealUsed || 0))} ・ ドラ ${dragonState(player)}</div>
-        <div class="status-line">現在：${currentOrderText(state, role)} ／ 次：${nextOrderText(state, role)}</div>
         <div class="effects-row">${window.AM.createEffectBadges(player) || '<span class="empty-note compact">継続効果なし</span>'}</div>
       </div>`;
   }
@@ -159,13 +158,13 @@
       }
       return;
     }
-    const centerLabel = state.phase === 'battle' ? window.AM.formatTurnLabel(state.turn) : '対戦開始前';
+    const centerLabel = window.AM.battlePhaseLabel(state, true);
     actionStatus.innerHTML = `
       <div class="action-status-chip ${p1.actionLocked ? 'is-ready' : 'is-waiting'}">
         <span class="label">${window.AM.escapeHtml(p1.name || 'プレイヤー1')}</span>
         <span class="value">${p1.actionLocked ? '入力済み' : '未入力'}</span>
       </div>
-      <div class="action-status-chip turn-chip">${centerLabel}</div>
+      <div class="action-status-chip turn-chip ${state.phase === 'battle' && state.turn === 10 ? 'final-turn-chip' : ''}">${centerLabel}</div>
       <div class="action-status-chip ${p2.actionLocked ? 'is-ready' : 'is-waiting'}">
         <span class="label">${window.AM.escapeHtml(p2.name || 'プレイヤー2')}</span>
         <span class="value">${p2.actionLocked ? '入力済み' : '未入力'}</span>
@@ -198,7 +197,13 @@
     const roomCreated = !!state.roomCreated;
     createBtn.classList.toggle('hidden', roomCreated);
     startBtn.classList.toggle('hidden', !(state.phase === 'lobby' && ready));
-    resolveBtn.classList.toggle('hidden', state.phase !== 'battle');
+    const inBattle = state.phase === 'battle';
+    const inSelection = inBattle && state.turnExecutionStage === 'selection';
+    const inFirstStage = inBattle && state.turnExecutionStage === 'first';
+    const inPostStage = inBattle && state.turnExecutionStage === 'second';
+    resolveBtn.classList.toggle('hidden', !inBattle || (!inSelection && !inFirstStage));
+    actionSelectBtn.classList.toggle('hidden', !inPostStage);
+    resolveBtn.disabled = inSelection && !(state.players.p1.actionLocked && state.players.p2.actionLocked);
     rematchBtn.classList.toggle('hidden', state.phase !== 'finished');
     resetBtn.classList.remove('hidden');
     const showControls = state.phase === 'battle' || state.phase === 'finished';
@@ -212,10 +217,10 @@
       toggleResultBtn.textContent = `リザルト：${state.resultRevealVisible ? '表示中' : '非表示中'}`;
     }
     if (state.phase === 'battle') {
-      const isSecond = state.turnExecutionStage === 'second';
-      resolveBtn.textContent = isSecond ? 'ターン実行(後攻)' : 'ターン実行(先攻)';
-      resolveBtn.classList.toggle('second-step', isSecond);
-      resolveBtn.classList.toggle('first-step', !isSecond);
+      const isFirstResolved = state.turnExecutionStage === 'first';
+      resolveBtn.textContent = isFirstResolved ? 'ターン実行(後攻)' : 'ターン実行(先攻)';
+      resolveBtn.classList.toggle('second-step', isFirstResolved);
+      resolveBtn.classList.toggle('first-step', !isFirstResolved);
     } else {
       resolveBtn.textContent = 'ターン実行(先攻)';
       resolveBtn.classList.remove('second-step');
@@ -239,7 +244,7 @@
       battleLog.innerHTML = '<div class="empty-note">ログはまだありません。</div>';
       return;
     }
-    const isCurrentPending = selected === state.turnSummary && !!state.pendingTurnData;
+    const isCurrentPending = selected === state.turnSummary && state.turnExecutionStage === 'first' && !!state.pendingTurnData;
     const blocks = [];
     const addBlock = (title, lines) => {
       if (!lines || !lines.length) return;
@@ -300,6 +305,14 @@
     }
   }
 
+  function actionSelectStart() {
+    try {
+      window.AM.updateState(currentRoom, (state) => window.AM_BATTLE.actionSelectStart(state));
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   function rematchMatch() {
     if (!confirm('同じプレイヤーで再戦を行いますか？')) return;
     try {
@@ -347,6 +360,7 @@
   startBtn.addEventListener('click', startMatch);
   rematchBtn.addEventListener('click', rematchMatch);
   resolveBtn.addEventListener('click', resolveTurn);
+  actionSelectBtn.addEventListener('click', actionSelectStart);
   resetBtn.addEventListener('click', resetMatch);
   showBetBtn.addEventListener('click', showBetOverlay);
   hideBetBtn.addEventListener('click', hideBetOverlay);

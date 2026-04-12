@@ -19,7 +19,9 @@
   function phaseLabel(state) {
     if (state.phase === 'lobby') return '対戦開始前';
     if (state.phase === 'finished') return '対戦終了';
-    return `${window.AM.formatTurnLabel ? window.AM.formatTurnLabel(state.turnSummary?.turn || state.turn) : `ターン${state.turnSummary?.turn || state.turn}`}`;
+    const turnLabel = `${window.AM.formatTurnLabel ? window.AM.formatTurnLabel(state.turnSummary?.turn || state.turn) : `ターン${state.turnSummary?.turn || state.turn}`}`;
+    if (state.turnExecutionStage === 'selection') return `${turnLabel}行動選択中`;
+    return turnLabel;
   }
 
   function actionClassFromLabel(label) {
@@ -54,8 +56,11 @@
   }
 
   function currentOrderText(state, role) {
-    const firstRole = state.pendingTurnData?.firstRole || state.turnSummary?.firstPlayerRole;
-    if (state.phase === 'battle' && firstRole) return firstRole === role ? '先' : '後';
+    const firstRole = state.pendingTurnData?.firstRole || state.firstAttackRole || state.turnSummary?.firstPlayerRole;
+    if (state.phase === 'battle' && firstRole) {
+      if (state.turnExecutionStage === 'selection') return `次：${firstRole === role ? '先' : '後'}`;
+      return firstRole === role ? '先' : '後';
+    }
     return '待';
   }
 
@@ -66,6 +71,7 @@
   function renderHeaderStatus(state, messagePulseRoles) {
     const p1 = state.players.p1, p2 = state.players.p2;
     phaseBanner.textContent = phaseLabel(state);
+    phaseBanner.classList.toggle('final-turn', state.phase === 'battle' && state.turn === 10);
     topReadyRow.innerHTML = '';
     topReadyRow.classList.add('hidden');
     const leftBubble = p1.message ? `<div class="chat-slot left"><div class="chat-bubble left${messagePulseRoles.p1 ? ' chat-bounce' : ''}"><span class="chat-bubble-text">${window.AM.escapeHtml(clipText(p1.message))}</span></div></div>` : '<div class="chat-slot left"></div>';
@@ -93,19 +99,19 @@
     const actualPlayer = state.players[role];
     const player = getDisplaySnapshot(state, role);
     const body = window.AM.findBody(actualPlayer.bodyId);
-    const pendingFirstOnly = state.phase === 'battle' && state.turnExecutionStage === 'second' && state.pendingTurnData;
+    const pendingFirstOnly = state.phase === 'battle' && state.turnExecutionStage === 'first' && state.pendingTurnData;
     const allowSummary = !(pendingFirstOnly && role !== state.pendingTurnData.firstRole);
-    const summary = allowSummary ? state.turnSummary?.entries?.[role] : null;
+    const summary = state.turnSummary?.entries?.[role] || null;
     const hp = Math.max(0, Math.min(100, player.hp));
     const shield = Math.max(0, player.shield || 0);
     const shieldWithin = Math.max(0, Math.min(100 - hp, shield));
     const overClass = hp + shield > 100 ? 'over' : '';
-    const anim = allowSummary ? (state.lastAnimations || {})[role] : null;
+    const anim = allowSummary ? (summary?.animation || null) : null;
     const resultClass = state.phase === 'finished' ? (state.winner === role ? 'winner-side' : state.winner && state.winner !== 'draw' ? 'loser-side' : '') : '';
     const orderText = currentOrderText(state, role);
     const choiceLabel = allowSummary ? (summary?.choiceLabel || '') : '';
-    const hpDelta = summary ? summary.hpAfter - summary.hpBefore : 0;
-    const hpDeltaLabel = !allowSummary ? '' : (hpDelta === 0 ? 'HP：変動なし' : `HP：${hpDelta > 0 ? '+' : ''}${hpDelta}`);
+    const hpDelta = Number(summary?.currentHpDelta || 0);
+    const hpDeltaLabel = summary?.currentHpDeltaLabel || 'HP：変動なし';
     const effects = [window.AM.createEffectBadges(actualPlayer), dragonState(actualPlayer) ? `<span class="effect-badge">${window.AM.escapeHtml(dragonState(actualPlayer).replace('ドラ ', ''))}</span>` : ''].filter(Boolean).join('');
     const choiceClass = actionClassFromLabel(choiceLabel);
     const statusText = actualPlayer.actionLocked ? '行動選択済み' : '行動選択中';
@@ -114,9 +120,9 @@
         <div class="spectator-name-row compact">
           <div class="spectator-body-icon${options.animateMessage ? ' body-icon-ping' : ''}">${window.AM.createBodyIconHTML(body, actualPlayer.name)}</div>
           <div class="spectator-name-block grow">
-            <div class="name-and-action-row with-inline-status right-justified">
+            <div class="name-and-action-row with-inline-status right-justified final-right-layout">
               <div class="spectator-name large">${window.AM.escapeHtml(actualPlayer.name || (role === 'p1' ? 'プレイヤー1' : 'プレイヤー2'))}</div>
-              <div class="player-inline-badges"><span class="ready-badge ${actualPlayer.actionLocked ? 'ready' : 'waiting'} same-height">${statusText}</span><span class="player-corner-order ${orderText === '先' ? 'first' : orderText === '後' ? 'second' : 'idle'} same-height inline-order static-order">${orderText}</span></div>
+              <div class="player-inline-badges final-right-badges"><span class="ready-badge ${actualPlayer.actionLocked ? 'ready' : 'waiting'} same-height">${statusText}</span><span class="player-corner-order ${orderText.includes('先') ? 'first' : orderText.includes('後') ? 'second' : 'idle'} same-height inline-order static-order">${window.AM.escapeHtml(orderText)}</span></div>
             </div>
           </div>
         </div>
